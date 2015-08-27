@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*<link href="~/Content/bs_leftnavi.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+    <link href="~/Content/SideMenu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="font-family: 'Ubuntu', sans-serif; font-size: 18px; height: 75px;">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="shop-logo">
+                    <a href="#" class="navbar-brand">TELLIMISKESKUS</a>
+                </div>
+                @*@Html.ActionLink("TELLIMISKESKUS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Tellitud tooted", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Tellimused", "About", "Home")</li>
+                    <li>@*@Html.ActionLink("Contact", "Contact", "Home")*@</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="nav-side-menu">
+            <div class="brand">Brand Logo</div>
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+            <div class="menu-list">
+
+                <ul id="menu-content" class="menu-content collapse out">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-dashboard fa-lg"></i> Dashboard
+                        </a>
+                    </li>
+
+                    <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                        <a href="#"><i class="fa fa-gift fa-lg"></i> UI Elements <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="products">
+                        <li class="active"><a href="#">CSS3 Animation</a></li>
+                        <li><a href="#">General</a></li>
+                        <li><a href="#">Buttons</a></li>
+                        <li><a href="#">Tabs & Accordions</a></li>
+                        <li><a href="#">Typography</a></li>
+                        <li><a href="#">FontAwesome</a></li>
+                        <li><a href="#">Slider</a></li>
+                        <li><a href="#">Panels</a></li>
+                        <li><a href="#">Widgets</a></li>
+                        <li><a href="#">Bootstrap Model</a></li>
+                    </ul>
+
+
+                    <li data-toggle="collapse" data-target="#service" class="collapsed">
+                        <a href="#"><i class="fa fa-globe fa-lg"></i> Services <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="service">
+                        <li>New Service 1</li>
+                        <li>New Service 2</li>
+                        <li>New Service 3</li>
+                    </ul>
+
+
+                    <li data-toggle="collapse" data-target="#new" class="collapsed">
+                        <a href="#"><i class="fa fa-car fa-lg"></i> New <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new">
+                        <li>New New 1</li>
+                        <li>New New 2</li>
+                        <li>New New 3</li>
+                    </ul>
+
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-user fa-lg"></i> Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-users fa-lg"></i> Users
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        @*<div class="gw-sidebar">
+            <div id="gw-sidebar" class="gw-sidebar">
+                <div class="nano-content">
+                    <ul class="gw-nav gw-nav-list">
+                        <li class="init-arrow-down">
+                            <a href="javascript:void(0)"> <span class="gw-menu-text">Piimatooted</span> <b class="gw-arrow"></b> </a>
+                            <ul class="gw-submenu">
+                                <li> <a href="javascript:void(0)">Menu 1</a> </li>
+                            </ul>
+                        </li>
+                        <li class="init-arrow-down">
+                            <a href="javascript:void(0)"> <span class="gw-menu-text">Juustud</span> <b class="gw-arrow icon-arrow-up8"></b> </a>
+                            <ul class="gw-submenu">
+                                <li> <a href="javascript:void(0)">Menu 1</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 2</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 3</a> </li>
+                            </ul>
+                        </li>
+                        <li class="init-arrow-down">
+                            <a href="javascript:void(0)"> <span class="gw-menu-text">Toidurasvad</span> <b></b> </a>
+                            <ul class="gw-submenu">
+                                <li> <a href="javascript:void(0)">Menu 1</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 2</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 3</a> </li>
+                            </ul>
+                        </li>
+                        <li class="init-arrow-down">
+                            <a href="javascript:void(0)"> <span class="gw-menu-text">Lihatooted</span> <b></b> </a>
+                            <ul class="gw-submenu">
+                                <li> <a href="javascript:void(0)">Keeduvorstid</a> </li>
+                                <li> <a href="javascript:void(0)">Keedusingid</a> </li>
+                                <li> <a href="javascript:void(0)">Vorstiviilud</a> </li>
+                                <li> <a href="javascript:void(0)">Singiviilud</a> </li>
+                                <li> <a href="javascript:void(0)">Sink</a> </li>
+                                <li> <a href="javascript:void(0)">Viinerid</a> </li>
+                                <li> <a href="javascript:void(0)">Sardellid</a> </li>
+                                <li> <a href="javascript:void(0)">Grillvorstid</a> </li>
+                                <li> <a href="javascript:void(0)">Salaamid</a> </li>
+                            </ul>
+                        </li>
+                        <li class="init-arrow-down">
+                            <a href="javascript:void(0)"> <span class="gw-menu-text">Linnuliha ja -tooted</span> <b></b> </a>
+                            <ul class="gw-submenu">
+                                <li> <a href="javascript:void(0)">Menu 1</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 2</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 3</a> </li>
+                            </ul>
+                        </li>
+                        <li class="init-arrow-down">
+                            <a href="javascript:void(0)"> <span class="gw-menu-text">Maitsestamiseks</span> <b></b> </a>
+                            <ul class="gw-submenu">
+                                <li> <a href="javascript:void(0)">Menu 1</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 2</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 3</a> </li>
+                            </ul>
+                        </li>
+                        <li class="init-arrow-down">
+                            <a href="javascript:void(0)"> <span class="gw-menu-text">Kuivained</span> <b></b> </a>
+                            <ul class="gw-submenu">
+                                <li> <a href="javascript:void(0)">Menu 1</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 2</a> </li>
+                                <li> <a href="javascript:void(0)">Menu 3</a> </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+        <div class="main-content">
+            @RenderBody()
+        </div>
+        
+        @*<hr />*@
+        <footer>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @*<script src="~/Scripts/bs_leftnavi.js"></script>*@
+    @*<script src="~/Scripts/main.js"></script>*@
+</body>
+</html>
