@@ -120,4 +120,5 @@ $(document).ready(function () {
             addTopMenusToSideMenu();
         }
     }
+    $("a").attr("data-push", true);
 });
