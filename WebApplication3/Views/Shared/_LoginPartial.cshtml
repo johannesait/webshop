@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
+@using WebApplication3.Helpers
+
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -16,7 +18,21 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="/Account/Register" id="registerLink"><i class="fa fa-shopping-cart"></i> Ostukorv</a></li>
-        <li><a href="/Account/Register" id="registerLink"><i class="fa fa-sign-out"></i> Logi välja</a></li>
+        <li>
+            @Ajax.RawActionLink("<i class='fa fa-shopping-cart'></i> Ostukorv", "Cart", "Product", null, new AjaxOptions
+                                   {
+                                       HttpMethod = "GET",
+                                       InsertionMode = InsertionMode.Replace,
+                                       UpdateTargetId = "main-content"
+                                   }, null)
+        </li>
+        <li>
+            @Ajax.RawActionLink("<i class='fa fa-sign-in'></i> Logi sisse", "Login", "Account", null, new AjaxOptions
+                                   {
+                                       HttpMethod = "GET",
+                                       InsertionMode = InsertionMode.Replace,
+                                       UpdateTargetId = "main-content"
+                                   }, null)
+        </li>
     </ul>
 }

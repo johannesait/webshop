@@ -1,0 +1,35 @@
+﻿@using WebApplication3.Helpers
+@model IEnumerable<DataLayer.ProductCategory>
+
+<div class="nav-side-menu">
+    <div class="brand">Tellimiskeskus</div>
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+    <div class="menu-list">
+        <ul id="menu-content" class="menu-content collapse out">
+            @foreach (var category in Model)
+            {
+                <li data-toggle="collapse" data-target="#@category.Name" class="collapsed">
+                    <a href="#">@category.Name<span class="arrow"></span></a>
+                </li>
+                if (category.SubCategories.Count != null)
+                {
+                    <ul class="sub-menu collapse" id="@category.Name">
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            string linkText = String.Format("<i class='fa fa-angle-right'></i>{0}", subCategory.Name);
+                            <li>
+                                @Ajax.RawActionLink(linkText, "ProductList", "Product", new { categoryName = subCategory.Name }, new AjaxOptions
+                                   {
+                                       HttpMethod = "GET",
+                                       InsertionMode = InsertionMode.Replace,
+                                       UpdateTargetId = "main-content"
+                                   }, null)
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+        </ul>
+    </div>
+</div>

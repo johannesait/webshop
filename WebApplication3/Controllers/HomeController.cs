@@ -10,6 +10,7 @@ namespace WebApplication3.Controllers
     {
         public ActionResult Index()
         {
+            var cert = Request.ClientCertificate;
             return View();
         }
 

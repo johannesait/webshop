@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DataLayer.Product>
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-condensed table-hover product-list-table">
+        <thead>
+            <tr>
+                <th>Tootekood</th>
+                <th>Nimetus</th>
+                <th>Nimelisa</th>
+                <th>Ühik</th>
+                <th>Hind km'ta</th>
+                <th>Hind km'ga</th>
+                <th>Pilt</th>
+                <th>Lisa korvi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductCode</td>
+                    <td>@item.Title</td>
+                    <td>@item.AdditionalTitle</td>
+                    <td>@item.Unit</td>
+                    <td>@Html.DisplayFor(model => item.PriceWithoutTax)</td>
+                    <td>@Html.DisplayFor(model => item.PriceWithVAT)</td>
+                    <td>
+                        @* Lingi asemel peaks äkki olema thumbnail *@
+                        <a href="#" class="product-image" data-thumbnail-src="@item.ProductPhoto.Aadress">Vaata pilti</a>
+                    </td>
+                    <td>
+                        <div class="input-group" style="width: 100px;">
+                            <input type="text" class="form-control input-sm product-amount" placeholder="0">
+                            <span class="input-group-btn">
+                                <button data-url="@Url.Action("AddProductToCart", "Product", new { id = item.ProductId} )" type="button" class="btn btn-default btn-sm add-to-cart">Lisa</button>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<img id="preview" width="200" />

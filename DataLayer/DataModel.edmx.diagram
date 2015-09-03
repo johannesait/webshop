@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="805c0abbd70342b68dd38ff7c3eda5be" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="1.875" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.AspNetRole" Width="1.5" PointX="0.75" PointY="10.625" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="18.125" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="23.75" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.AspNetUser" Width="1.5" PointX="3" PointY="9.125" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.Cart" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.CartProduct" Width="1.5" PointX="5.25" PointY="4.5" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.Order" Width="1.5" PointX="5.25" PointY="13.375" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.OrderProduct" Width="1.5" PointX="7.5" PointY="13.875" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.OrderStatu" Width="1.5" PointX="3" PointY="17.625" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.Product" Width="1.5" PointX="3" PointY="3.625" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.ProductCategory" Width="1.5" PointX="1.5" PointY="14.875" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.ProductCategoryDiscount" Width="1.5" PointX="8.25" PointY="10.25" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.ProductDiscount" Width="1.5" PointX="5.25" PointY="10.25" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.ProductPhoto" Width="1.5" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.SubCategory" Width="1.5" PointX="0.75" PointY="5.5" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.sysdiagram" Width="1.5" PointX="7.75" PointY="1.875" />
+        <EntityTypeShape EntityType="MonesJaTuurPoodModel.ViewedProduct" Width="1.5" PointX="5.25" PointY="7.5" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_AspNetUsers" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_ProductDiscount_AspNetUsers" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_Tellimus_Kasutaja" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_ViewedProduct_AspNetUsers" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_CartProducts_CartProducts" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_OstukorvTooted_Toode" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_Tellimus_TellimuseStaatus" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_TellimusToode_Tellimus" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_OrderProduct_SubCategory" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_Toode_Alamgrupp" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_Toode_TootePilt" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_TooteSoodustus_Toode" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_VaadatudTooted_Toode" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_Alamgrupp_Kaubagrupp" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_SubCategory" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
