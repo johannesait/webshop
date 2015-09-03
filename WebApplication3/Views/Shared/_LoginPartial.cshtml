@@ -19,7 +19,7 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Ajax.RawActionLink("<i class='fa fa-shopping-cart'></i> Ostukorv", "Cart", "Product", null, new AjaxOptions
+            @Ajax.RawActionLink("<i class='fa fa-shopping-cart'></i> Ostukorv <span id='cart-sum-badge'></span>", "Cart", "Product", null, new AjaxOptions
                                    {
                                        HttpMethod = "GET",
                                        InsertionMode = InsertionMode.Replace,

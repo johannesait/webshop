@@ -18,6 +18,23 @@ namespace WebApplication3.Controllers
             return PartialView(cart);
         }
 
+        public JsonResult CartTotalSum()
+        {
+            var cart = getUserShoppingCart();
+
+            return Json(new { totalSum = cart.TotalPriceWithVAT }, JsonRequestBehavior.AllowGet);
+        }
+
+        private Cart newCart()
+        {
+            //if kasutaja on sisse loginud, siis seo kasutajaga
+            return new Cart
+            {
+                Id = Guid.NewGuid(),
+                CartProducts = new List<CartProduct>()
+            };
+        }
+
         private Cart getUserShoppingCart() {
             Cart cart = null;
             //mis siis kui mitu kasutajat samas arvutis on?
@@ -25,21 +42,35 @@ namespace WebApplication3.Controllers
             var cookie = Request.Cookies["cartId"];
             if (cookie == null)
             {
-                cart = new Cart
-                {
-                    Id = Guid.NewGuid(),
-                    CartProducts = new List<CartProduct>()
-                };
+                cart = newCart();
                 Context.Carts.Add(cart);
-                Context.SaveChangesAsync();
+                Context.SaveChanges();
                 cookie = new HttpCookie("cartId", cart.Id.ToString());
                 cookie.Expires = DateTime.Now.AddDays(1);
                 Response.SetCookie(cookie);
             }
             else
             {
+                //if cookie is expired create a new cart and cookie
+                //if (cookie.Expires < DateTime.Now)
+                //{
+                //    var oldCart = Context.Carts.Find(Guid.Parse(cookie.Value));
+                //    Context.Carts.Remove(oldCart);
+                //    Context.SaveChanges();
+
+                //    cart = newCart();
+                //    cookie.Value = cart.Id.ToString();
+                //    cookie.Expires = DateTime.Now.AddDays(1);
+                //    Response.SetCookie(cookie);
+                //}
+                //else
+                //{
+                //    Guid cartId = Guid.Parse(cookie.Value);
+                //    cart = Context.Carts.Find(cartId);
+                //}
                 Guid cartId = Guid.Parse(cookie.Value);
                 cart = Context.Carts.Find(cartId);
+                
             }
 
             return cart;
@@ -78,6 +109,7 @@ namespace WebApplication3.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult RemoveProductFromCart(Guid id)
         {
             try

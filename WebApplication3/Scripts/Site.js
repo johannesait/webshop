@@ -60,8 +60,32 @@ $(window).resize(function () {
 //    alert("Ajax stopped");
 //});
 
-var updateCartBadge = function () {
+var getCartSum = function () {
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: { amount: amount },
+        global: false,
+        success: function (data) {
+            showSuccess("Lisatud ostukorvi!", "")
+        }
+    })
+}
 
+var updateCartBadge = function (sum) {
+    if (sum != null) {
+        $("#cart-sum-badge").text("(" + sum + " €)");
+    }
+    else {
+        $.ajax({
+            type: "GET",
+            url: '/Product/CartTotalSum',
+            global: false,
+            success: function (data) {
+                $("#cart-sum-badge").text("(" + data.totalSum + " €)");
+            }
+        })
+    }
 }
 
 var formatDecimalNumber = function (number) {
@@ -75,13 +99,29 @@ var addProductToCart = function (url, amount) {
         data: { amount: amount },
         global: false,
         success: function (data) {
-            showSuccess("Lisatud ostukorvi!", "")
+            showSuccess("Lisatud ostukorvi!", "");
+            updateCartBadge();
         }
     })
 }
 
 var removeProductFromCart = function (url) {
-
+    $.ajax({
+        type: "POST",
+        url: url,
+        global: false,
+        success: function (data) {
+            $.ajax({
+                type: "GET",
+                url: "/Product/Cart",
+                global: false,
+                success: function (data) {
+                    $("#main-content").html(data);
+                    updateCartBadge();
+                }
+            })
+        }
+    })
 }
 
 $("body").on("click", ".add-to-cart", function (e) {
@@ -108,11 +148,35 @@ $("body").on("mouseleave", "a.product-image",
     }
 );
 $("body").on("click", ".remove-from-cart", function (e) {
-    
+    var removeUrl = $(this).data("remove-url");
+    $(this).closest("tr").hide(300, function () {
+        removeProductFromCart(removeUrl);
+    });
+    //BootstrapDialog.show({
+    //    title: 'Hoiatus',
+    //    message: 'Kas olete kindel, et tahate toote ostukorvist eemaldada?',
+    //    buttons: [{
+    //        label: 'Jah',
+    //        action: function (dialog) {
+    //            //dialog.setTitle('Title 1');
+    //            dialog.close();
+    //        }
+    //    }, {
+    //        label: 'Ei',
+    //        action: function (dialog) {
+    //            //dialog.setTitle('Title 2');
+    //            dialog.close();
+    //        }
+    //    }]
+    //});
 })
 
+$("body").on("click", ".change-product-amount", function (e) {
+
+});
+
 $(document).ready(function () {
-    PNotify.prototype.options.styling = "fontawesome";
+    updateCartBadge();
     var topMenusAdded = $("#menu-content").hasClass("collapsed-menu");
     if (getWindowWidth() < 767) {
         if (!topMenusAdded) {

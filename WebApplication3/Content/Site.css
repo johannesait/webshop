@@ -128,10 +128,19 @@ textarea {
     line-height:1.4;
     padding: 4px 6px;
 }
+.change-product-amount {
+    line-height:1.4;
+    padding: 4px 4px;
+}
 .cart-table .remove-from-cart {
     font-size:20px;
 }
-.product-list-table .product-amount {
+.product-list-table .product-amount,
+.cart-table .product-amount {
     padding: 4px 6px;
     height:26px;
+}
+.bootstrap-dialog .modal-header {
+     border-top-left-radius: 0!important; 
+     border-top-right-radius: 0!important; 
 }
