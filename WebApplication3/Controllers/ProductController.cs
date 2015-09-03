@@ -140,5 +140,41 @@ namespace WebApplication3.Controllers
             var products = productCategory.Products;
             return PartialView(products);
         }
+
+        public ActionResult CartConfirmation()
+        {
+            var user = new AspNetUser(){
+                UserName = "sandra62",
+                Email = "sandra.demitseva@gmail.com",
+                Id = Guid.NewGuid().ToString()
+            };
+            var cart = getUserShoppingCart();
+
+            var order = new Order() { 
+                Id = cart.Id,
+                UserId = user.Id
+            };
+            order.OrderStatu = Context.OrderStatus.Single(x => x.Status == "Maksmata");
+            foreach (var item in cart.CartProducts)
+            {
+                order.OrderProducts.Add(new OrderProduct
+                {
+                    Id = Guid.NewGuid(),
+                    ProductCode = item.Product.ProductCode,
+                    Title = item.Product.Title,
+                    AdditionalTitle = item.Product.AdditionalTitle,
+                    Unit = item.Product.Unit,
+                    PriceWithoutTax = item.Product.PriceWithoutTax,
+                    SubCategory = item.Product.SubCategory,
+                    Amount = item.Amount,
+                    OrderId = order.Id
+                });
+            }
+            Context.Carts.Remove(cart);
+            Context.AspNetUsers.Add(user);
+            Context.Orders.Add(order);
+            Context.SaveChanges();
+            return RedirectToAction("Index", "Order");
+        }
     }
 }

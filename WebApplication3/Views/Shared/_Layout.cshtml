@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
@@ -51,5 +52,7 @@
     <script src="~/Scripts/Site.js"></script>
     <script src="~/Scripts/pnotify.custom.min.js"></script>
     <script src="~/Scripts/bootstrap-dialog.min.js"></script>
+    @Scripts.Render("~/bundles/wiselinks")
+    <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/wiselinks/coffeeScripts/coffee")"></script>
 </body>
 </html>

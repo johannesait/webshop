@@ -15,7 +15,7 @@
     <AssemblyName>WebApplication3</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -39,6 +39,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CoffeeScriptHttpHandler">
+      <HintPath>..\packages\CoffeeSharp.0.6\lib\CoffeeScriptHttpHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="CoffeeSharp">
+      <HintPath>..\packages\CoffeeSharp.0.6\lib\CoffeeSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Jurassic">
+      <HintPath>..\packages\CoffeeSharp.0.6\lib\Jurassic.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -162,9 +171,11 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Shop\Controllers\HomeController.cs" />
     <Compile Include="Areas\Shop\ShopAreaRegistration.cs" />
+    <Compile Include="CoffeeCompiler.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -214,6 +225,10 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Site.js" />
+    <Content Include="Scripts\wiselinks\application.js" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\application.js.js" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\application.js.min.js" />
+    <Content Include="Scripts\wiselinks\wiselinks-1.2.2.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -257,6 +272,17 @@
     <Content Include="Views\Product\ProductList.cshtml" />
     <Content Include="Views\Product\CategoryMenu.cshtml" />
     <Content Include="Views\Product\Cart.cshtml" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\application.js.coffee" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\application.js.js.map" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\application.js.min.js.map" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\wiselinks.js.coffee" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\_dom_parser.js.coffee" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\_form.js.coffee" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\_link.js.coffee" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\_page.js.coffee" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\_request_manager.js.coffee" />
+    <Content Include="Scripts\wiselinks\coffeeScripts\_response.js.coffee" />
+    <Content Include="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -296,7 +322,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59184</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost/</IISUrl>
+          <IISUrl>http://localhost:59184/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
