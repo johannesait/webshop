@@ -16,6 +16,7 @@ namespace DataLayer
     {
         public SubCategory()
         {
+            this.OrderProducts = new HashSet<OrderProduct>();
             this.Products = new HashSet<Product>();
             this.ProductCategoryDiscounts = new HashSet<ProductCategoryDiscount>();
         }
@@ -24,7 +25,7 @@ namespace DataLayer
         public string Name { get; set; }
         public System.Guid ParentCategoryId { get; set; }
     
-        public virtual OrderProduct OrderProduct { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
         public virtual ICollection<Product> Products { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<ProductCategoryDiscount> ProductCategoryDiscounts { get; set; }

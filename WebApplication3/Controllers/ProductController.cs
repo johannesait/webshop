@@ -152,7 +152,8 @@ namespace WebApplication3.Controllers
 
             var order = new Order() { 
                 Id = cart.Id,
-                UserId = user.Id
+                UserId = user.Id,
+                OrderNumber = "100"
             };
             order.OrderStatu = Context.OrderStatus.Single(x => x.Status == "Maksmata");
             foreach (var item in cart.CartProducts)
@@ -165,12 +166,19 @@ namespace WebApplication3.Controllers
                     AdditionalTitle = item.Product.AdditionalTitle,
                     Unit = item.Product.Unit,
                     PriceWithoutTax = item.Product.PriceWithoutTax,
-                    SubCategory = item.Product.SubCategory,
+                    SubCategoryId = item.Product.SubCategoryId,
                     Amount = item.Amount,
                     OrderId = order.Id
                 });
             }
+
             Context.Carts.Remove(cart);
+            var cookie = Request.Cookies["cartId"];
+            if (cookie != null)
+            {
+                cookie.Value = null;
+                Response.SetCookie(cookie);
+            }
             Context.AspNetUsers.Add(user);
             Context.Orders.Add(order);
             Context.SaveChanges();

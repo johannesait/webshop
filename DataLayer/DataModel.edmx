@@ -88,6 +88,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="StatusId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrderNumber" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderProduct">
           <Key>
@@ -269,13 +270,13 @@
         </Association>
         <Association Name="FK_OrderProduct_SubCategory">
           <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="1" />
-          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="0..1" />
+          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubCategory">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="OrderProduct">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="SubCategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -704,6 +705,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="StatusId" Type="Guid" Nullable="false" />
+          <Property Name="OrderNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AspNetUser" Relationship="MonesJaTuurPoodModel.FK_Tellimus_Kasutaja" FromRole="Order" ToRole="AspNetUser" />
           <NavigationProperty Name="OrderStatu" Relationship="MonesJaTuurPoodModel.FK_Tellimus_TellimuseStaatus" FromRole="Order" ToRole="OrderStatu" />
           <NavigationProperty Name="OrderProducts" Relationship="MonesJaTuurPoodModel.FK_TellimusToode_Tellimus" FromRole="Order" ToRole="OrderProduct" />
@@ -800,7 +802,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ParentCategoryId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="OrderProduct" Relationship="MonesJaTuurPoodModel.FK_OrderProduct_SubCategory" FromRole="SubCategory" ToRole="OrderProduct" />
+          <NavigationProperty Name="OrderProducts" Relationship="MonesJaTuurPoodModel.FK_OrderProduct_SubCategory" FromRole="SubCategory" ToRole="OrderProduct" />
           <NavigationProperty Name="Products" Relationship="MonesJaTuurPoodModel.FK_Toode_Alamgrupp" FromRole="SubCategory" ToRole="Product" />
           <NavigationProperty Name="ProductCategory" Relationship="MonesJaTuurPoodModel.FK_Alamgrupp_Kaubagrupp" FromRole="SubCategory" ToRole="ProductCategory" />
           <NavigationProperty Name="ProductCategoryDiscounts" Relationship="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_SubCategory" FromRole="SubCategory" ToRole="ProductCategoryDiscount" />
@@ -952,13 +954,13 @@
         </Association>
         <Association Name="FK_OrderProduct_SubCategory">
           <End Type="MonesJaTuurPoodModel.SubCategory" Role="SubCategory" Multiplicity="1" />
-          <End Type="MonesJaTuurPoodModel.OrderProduct" Role="OrderProduct" Multiplicity="0..1" />
+          <End Type="MonesJaTuurPoodModel.OrderProduct" Role="OrderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubCategory">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="OrderProduct">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="SubCategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1118,6 +1120,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="MonesJaTuurPoodModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
