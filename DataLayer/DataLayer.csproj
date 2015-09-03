@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationData\Constants.cs" />
+    <Compile Include="ApplicationData\Constants.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="AspNetRole.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>

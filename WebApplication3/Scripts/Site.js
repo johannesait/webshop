@@ -80,6 +80,10 @@ var addProductToCart = function (url, amount) {
     })
 }
 
+var removeProductFromCart = function (url) {
+
+}
+
 $("body").on("click", ".add-to-cart", function (e) {
     var button = e.target;
     var amountInput = $(button).parent().prev();
@@ -88,22 +92,24 @@ $("body").on("click", ".add-to-cart", function (e) {
     if (amount != 0 && amount != "") {
         addProductToCart(url, amount);
         $(amountInput).val("");
-
     }
 })
 
 $("body").on("mouseenter", "a.product-image",
-            function (evt) {
-                $('#preview').css({ left: $(this).offset().left - 210, top: $(this).offset().top + 10 }).show();
-                $("#preview").attr("src", $(this).data("thumbnail-src"));
-                $("#preview").show();
-            }
-        );
+    function (evt) {
+        $('#preview').css({ left: $(this).offset().left - 210, top: $(this).offset().top + 10 }).show();
+        $("#preview").attr("src", $(this).data("thumbnail-src"));
+        $("#preview").show();
+    }
+);
 $("body").on("mouseleave", "a.product-image",
     function () {
         $("#preview").hide();
     }
 );
+$("body").on("click", ".remove-from-cart", function (e) {
+    
+})
 
 $(document).ready(function () {
     PNotify.prototype.options.styling = "fontawesome";
