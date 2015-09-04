@@ -23,6 +23,7 @@ namespace DataLayer
         public string UserId { get; set; }
         public System.Guid StatusId { get; set; }
         public string OrderNumber { get; set; }
+        public System.DateTime DateOfOrder { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual OrderStatu OrderStatu { get; set; }

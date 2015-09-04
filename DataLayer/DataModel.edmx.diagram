@@ -41,6 +41,7 @@
         <AssociationConnector Association="MonesJaTuurPoodModel.FK_Alamgrupp_Kaubagrupp" />
         <AssociationConnector Association="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_SubCategory" />
         <AssociationConnector Association="MonesJaTuurPoodModel.AspNetUserRoles" />
+        <AssociationConnector Association="MonesJaTuurPoodModel.FK_Cart_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

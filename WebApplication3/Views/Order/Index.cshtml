@@ -1,7 +1,31 @@
-﻿
+﻿@model IEnumerable<DataLayer.Order>
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+<hr />
 
+<div class="table-responsive">
+    <table class="table table-condensed table-hover product-list-table">
+        <thead>
+            <tr>
+                <th>Tellimuse nr</th>
+                <th>Tellitud</th>
+                <th>Staatus</th>
+                <th>Summa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OrderNumber</td>
+                    <td>@item.DateOfOrder</td>
+                    <td>@item.OrderStatu.Status</td>
+                    <td>@Html.DisplayFor(model => item.TotalPriceWithVAT) €</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

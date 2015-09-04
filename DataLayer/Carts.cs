@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    [MetadataType(typeof(CartMetaData))]
+    [MetadataType(typeof(OrderMetaData))]
     public partial class Cart
     {
         [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
@@ -44,7 +44,7 @@ namespace DataLayer
         }
     }
 
-    public partial class CartMetaData
+    public partial class OrderMetaData
     {
     }
 }
