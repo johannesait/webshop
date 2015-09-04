@@ -1,0 +1,66 @@
+﻿@model DataLayer.Order
+
+<h1>Tellimus nr @Model.OrderNumber</h1>
+<h3>@Model.DateOfOrder.ToShortDateString()</h3>
+<hr style="clear:both;" />
+<div class="row">
+    <div class="table-responsive col-xs-12">
+        <table class="table table-condensed table-hover cart-table">
+            <thead>
+                <tr>
+                    <th>Tootekood</th>
+                    <th>Nimetus</th>
+                    <th>Nimelisa</th>
+                    <th>Ühik</th>
+                    <th>Hind km'ta</th>
+                    <th>Hind km'ga</th>
+                    <th>Kogus</th>
+                    <th>Kokku km'ta</th>
+                    <th>Kokku km'ga</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model.OrderProducts)
+                    {
+                        <tr data-product-id="@item.Id">
+                            <td>@Html.DisplayFor(model => item.ProductCode)</td>
+                            <td>@Html.DisplayFor(model => item.Title)</td>
+                            <td>@Html.DisplayFor(model => item.AdditionalTitle)</td>
+                            <td>@Html.DisplayFor(model => item.Unit)</td>
+                            <td>@Html.DisplayFor(model => item.PriceWithoutTax)</td>
+                            <td>@Html.DisplayFor(model => item.PriceWithVAT)</td>
+                            <td>@Html.DisplayFor(model => item.Amount)</td>
+                            <td>@Html.DisplayFor(model => item.TotalPriceWithoutVAT)</td>
+                            <td>@Html.DisplayFor(model => item.TotalPriceWithVAT)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="table-responsive col-xs-12 col-sm-4 col-sm-offset-8">
+        <table class="table table-condensed table-hover">
+            <tbody>
+                <tr>
+                    <td>Kokku km'ta:</td>
+                    <td>@Html.DisplayFor(model => Model.TotalPriceWithoutVAT)</td>
+                </tr>
+                <tr>
+                    <td>Kokku km'ga:</td>
+                    <td>@Html.DisplayFor(model => Model.TotalPriceWithVAT)</td>
+                </tr>
+                <tr>
+                    <td>Käibemaks (20%):</td>
+                    <td>@Html.DisplayFor(model => Model.VATOfTotalPrice)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="cart-buttons col-xs-12">
+        <div class="pull-right">
+            <a href="@Url.Action("Pay", "Order")" class="pay-order-button btn btn-danger">Maksa arve</a>
+        </div>
+    </div>
+</div>

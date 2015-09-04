@@ -11,7 +11,7 @@ namespace DataLayer
     [MetadataType(typeof(OrderMetaData))]
     public partial class Cart
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
         public decimal TotalPriceWithoutVAT
         {
             get
@@ -25,16 +25,16 @@ namespace DataLayer
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
         public decimal TotalPriceWithVAT
         {
             get
             {
-                return TotalPriceWithoutVAT + (TotalPriceWithoutVAT * Constants.VAT);
+                return Math.Round(TotalPriceWithoutVAT + (TotalPriceWithoutVAT * Constants.VAT), 2, MidpointRounding.AwayFromZero);
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
         public decimal VATOfTotalPrice
         {
             get

@@ -144,3 +144,11 @@ textarea {
      border-top-left-radius: 0!important; 
      border-top-right-radius: 0!important; 
 }
+.main-content h3 {
+    float:right;
+    padding-top: 13px;
+    padding-left: 10px;
+}
+.main-content h1 {
+    float:left;
+}
