@@ -24,5 +24,6 @@ namespace DataLayer
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual ICollection<CartProduct> CartProducts { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
 {
@@ -12,11 +15,32 @@ namespace WebApplication3.Controllers
     {
         private readonly MonesJaTuurPoodEntities Context = new MonesJaTuurPoodEntities();
 
+        public ProductController()
+        {
+        }
+
+        public ProductController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+        }
+
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         public ActionResult Cart()
         {
             var cart = getUserShoppingCart();
             if (Request.IsAjaxRequest())
-                return PartialView(cart);
+            return PartialView(cart);
             else
                 return View(cart);
         }
@@ -31,12 +55,12 @@ namespace WebApplication3.Controllers
         private Cart newCart()
         {
             if (User.Identity.IsAuthenticated)
-                return new Cart
-                {
-                    Id = Guid.NewGuid(),
+            return new Cart
+            {
+                Id = Guid.NewGuid(),
                     UserId = User.Identity.GetUserId(),
-                    CartProducts = new List<CartProduct>()
-                };
+                CartProducts = new List<CartProduct>()
+            };
             else
                 return new Cart
                 {
@@ -79,14 +103,14 @@ namespace WebApplication3.Controllers
             {
                 cart = getCartFromCookie();
                 if (cart == null)
-                {
-                    cart = newCart();
-                    Context.Carts.Add(cart);
-                    Context.SaveChanges();
+            {
+                cart = newCart();
+                Context.Carts.Add(cart);
+                Context.SaveChanges();
                     var cookie = new HttpCookie("cartId", cart.Id.ToString());
-                    cookie.Expires = DateTime.Now.AddDays(1);
-                    Response.SetCookie(cookie);
-                }
+                cookie.Expires = DateTime.Now.AddDays(1);
+                Response.SetCookie(cookie);
+            }
             }
 
             return cart;
@@ -159,16 +183,23 @@ namespace WebApplication3.Controllers
 
         public ActionResult CartConfirmation()
         {
-            var user = new AspNetUser(){
-                UserName = "sandra62",
-                Email = "sandra.demitseva@gmail.com",
-                Id = Guid.NewGuid().ToString()
-            };
-            var cart = getUserShoppingCart();
+            var orderNumberOfTheDay = Context.Orders.ToList().Where(x => x.OrderNumber.Contains("5070") && x.OrderNumber.Contains(DateTime.Now.Date.ToShortDateString())).Distinct().Count() + 1;
+            //var user = new AspNetUser()
+            //{
+            //    UserName = "sandra62",
+            //    Email = "sandra.demitseva@gmail.com",
+            //    Id = Guid.NewGuid().ToString()
+            //};
+            var userId = User.Identity.GetUserId();
 
+            var cart = getUserShoppingCart();
+            var orderNumberDate = DateTime.Now.Date.ToShortDateString().Replace("/", "");
             var order = new Order() { 
                 Id = cart.Id,
-                UserId = user.Id
+                UserId = userId,
+                //kliendinumber + kuupäev + päeva tellimus
+                OrderNumber = "5070-" + orderNumberDate + "-" + orderNumberOfTheDay,
+                DateOfOrder = DateTime.Now
             };
             order.OrderStatu = Context.OrderStatus.Single(x => x.Status == "Maksmata");
             foreach (var item in cart.CartProducts)
@@ -181,16 +212,31 @@ namespace WebApplication3.Controllers
                     AdditionalTitle = item.Product.AdditionalTitle,
                     Unit = item.Product.Unit,
                     PriceWithoutTax = item.Product.PriceWithoutTax,
-                    SubCategory = item.Product.SubCategory,
+                    SubCategoryId = item.Product.SubCategoryId,
                     Amount = item.Amount,
                     OrderId = order.Id
+                    
                 });
             }
+
             Context.Carts.Remove(cart);
-            Context.AspNetUsers.Add(user);
+            var cookie = Request.Cookies["cartId"];
+            if (cookie != null)
+            {
+                cookie.Value = null;
+                Response.SetCookie(cookie);
+            }
+            //Context.AspNetUsers.Add(user);
             Context.Orders.Add(order);
             Context.SaveChanges();
             return RedirectToAction("Index", "Order");
+        }
+
+        public ActionResult CreateUser()
+        {
+            var user = new ApplicationUser { FirstName = "Sanddra", LastName = "Demitseva", UserName = "sandra629", Email = "sandra.demitseva@gmail.com" };
+            var result = UserManager.Create(user, "Parool1.");
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

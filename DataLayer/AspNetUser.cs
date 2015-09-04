@@ -24,6 +24,7 @@ namespace DataLayer
             this.Orders = new HashSet<Order>();
             this.ViewedProducts = new HashSet<ViewedProduct>();
             this.AspNetRoles = new HashSet<AspNetRole>();
+            this.Carts = new HashSet<Cart>();
         }
     
         public string Id { get; set; }
@@ -49,5 +50,6 @@ namespace DataLayer
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<ViewedProduct> ViewedProducts { get; set; }
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        public virtual ICollection<Cart> Carts { get; set; }
     }
 }

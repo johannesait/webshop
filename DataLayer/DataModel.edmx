@@ -103,9 +103,9 @@
           <Property Name="Title" Type="nvarchar" MaxLength="1024" Nullable="false" />
           <Property Name="AdditionalTitle" Type="nvarchar" MaxLength="255" />
           <Property Name="Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="PriceWithoutTax" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PriceWithoutTax" Type="decimal" Precision="18" Scale="9" Nullable="false" />
           <Property Name="SubCategoryId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="9" Nullable="false" />
           <Property Name="OrderId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderStatus">
@@ -572,10 +572,6 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK_Cart_AspNetUsers" Association="MonesJaTuurPoodModel.FK_Cart_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Cart" EntitySet="Carts" />
-          </AssociationSet>
           <AssociationSet Name="FK_ProductCategoryDiscount_AspNetUsers" Association="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="ProductCategoryDiscount" EntitySet="ProductCategoryDiscounts" />
@@ -640,6 +636,10 @@
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Cart_AspNetUsers" Association="MonesJaTuurPoodModel.FK_Cart_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -696,25 +696,25 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="MonesJaTuurPoodModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="MonesJaTuurPoodModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
-          <NavigationProperty Name="Carts" Relationship="MonesJaTuurPoodModel.FK_Cart_AspNetUsers" FromRole="AspNetUser" ToRole="Cart" />
           <NavigationProperty Name="ProductCategoryDiscounts" Relationship="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_AspNetUsers" FromRole="AspNetUser" ToRole="ProductCategoryDiscount" />
           <NavigationProperty Name="ProductDiscounts" Relationship="MonesJaTuurPoodModel.FK_ProductDiscount_AspNetUsers" FromRole="AspNetUser" ToRole="ProductDiscount" />
           <NavigationProperty Name="Orders" Relationship="MonesJaTuurPoodModel.FK_Tellimus_Kasutaja" FromRole="AspNetUser" ToRole="Order" />
           <NavigationProperty Name="ViewedProducts" Relationship="MonesJaTuurPoodModel.FK_ViewedProduct_AspNetUsers" FromRole="AspNetUser" ToRole="ViewedProduct" />
           <NavigationProperty Name="AspNetRoles" Relationship="MonesJaTuurPoodModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Carts" Relationship="MonesJaTuurPoodModel.FK_Cart_AspNetUsers" FromRole="AspNetUser" ToRole="Cart" />
         </EntityType>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CartProducts" Relationship="MonesJaTuurPoodModel.FK_CartProducts_CartProducts" FromRole="Cart" ToRole="CartProduct" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="MonesJaTuurPoodModel.FK_Cart_AspNetUsers" FromRole="Cart" ToRole="AspNetUser" />
-          <NavigationProperty Name="CartProducts" Relationship="MonesJaTuurPoodModel.FK_CartProducts_CartProducts" FromRole="Cart" ToRole="CartProduct" />
         </EntityType>
         <EntityType Name="CartProduct">
           <Key>
@@ -735,10 +735,10 @@
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="StatusId" Type="Guid" Nullable="false" />
           <Property Name="OrderNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DateOfOrder" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="MonesJaTuurPoodModel.FK_Tellimus_Kasutaja" FromRole="Order" ToRole="AspNetUser" />
           <NavigationProperty Name="OrderStatu" Relationship="MonesJaTuurPoodModel.FK_Tellimus_TellimuseStaatus" FromRole="Order" ToRole="OrderStatu" />
           <NavigationProperty Name="OrderProducts" Relationship="MonesJaTuurPoodModel.FK_TellimusToode_Tellimus" FromRole="Order" ToRole="OrderProduct" />
+          <Property Name="DateOfOrder" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="OrderProduct">
           <Key>
@@ -749,9 +749,9 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Name="AdditionalTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PriceWithoutTax" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="PriceWithoutTax" Type="Decimal" Nullable="false" Precision="18" Scale="9" />
           <Property Name="SubCategoryId" Type="Guid" Nullable="false" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="9" />
           <Property Name="OrderId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="MonesJaTuurPoodModel.FK_TellimusToode_Tellimus" FromRole="OrderProduct" ToRole="Order" />
           <NavigationProperty Name="SubCategory" Relationship="MonesJaTuurPoodModel.FK_OrderProduct_SubCategory" FromRole="OrderProduct" ToRole="SubCategory" />
@@ -882,18 +882,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AspNetUserLogin">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cart_AspNetUsers">
-          <End Type="MonesJaTuurPoodModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="MonesJaTuurPoodModel.Cart" Role="Cart" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Cart">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1081,6 +1069,18 @@
         <Association Name="AspNetUserRoles">
           <End Type="MonesJaTuurPoodModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="MonesJaTuurPoodModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Cart_AspNetUsers">
+          <End Type="MonesJaTuurPoodModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="MonesJaTuurPoodModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
