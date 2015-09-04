@@ -53,24 +53,15 @@ else
                                     <td>@Html.DisplayFor(model => item.Product.PriceWithVAT)</td>
                                     <td>
                                         <input type="hidden" name="cartProducts[@c].ProductId" value="@item.ProductId">
-                                        @*<div class="input-group" style="width: 80px;">
+                                        <div class="input-group" style="width: 90px;">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default btn-sm change-product-amount decrease-product-amount" type="button">-</button>
-                                            </span>
-                                            <input type="text" name="cartProducts[@c].Amount" class="form-control input-sm product-amount" value="@Html.DisplayFor(model => item.Amount)">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default btn-sm change-product-amount increase-product-amount" type="button">+</button>
-                                            </span>
-                                        </div>*@
-                                        <div class="input-group" style="width: 80px;">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="decrease" data-target="#spinner" data-toggle="spinner">
+                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="-0.5" data-target="#spinner" data-toggle="spinner">
                                                     <span class="glyphicon glyphicon-minus"></span>
                                                 </button>
                                             </span>
-                                            <input type="text" name="cartProducts[@c].Amount" data-value="0,5" data-ride="spinner" id="spinner" class="form-control input-number input-sm product-amount" value="1">
+                                            <input type="text" name="cartProducts[@c].Amount" data-ride="spinner" id="spinner" data-precision="2" class="form-control input-number input-sm product-amount" value="@Html.DisplayFor(model => item.Amount)">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="increase" data-target="#spinner" data-toggle="spinner">
+                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="0.5" data-target="#spinner" data-toggle="spinner">
                                                     <span class="glyphicon glyphicon-plus"></span>
                                                 </button>
                                             </span>

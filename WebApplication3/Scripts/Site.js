@@ -154,14 +154,18 @@ $("body").on("click", ".remove-from-cart", function (e) {
     });
 })
 
-$("body").on("click", ".change-product-amount", function (e) {
-    debugger;
-    var productRow = $(this).closest("tr");
-    var productId = $(productRow).data("product-id")
-    var newAmount = $(productRow).find(".product-amount").val();
+//$("body").on("click", ".change-product-amount", function (e) {
+//    var targetInput = $($(this).data("target"));
+//    var operation = $(this).data("value");
 
+//    var value = parseFloat($(targetInput).val());
+//    if (operation == "increase")
+//        value += 1;
+//    else
+//        value -= 1;
 
-});
+//    $(targetInput).val(value);
+//});
 
 $("body").on("submit", "#cart-update-form", function (e) {
     e.preventDefault();
