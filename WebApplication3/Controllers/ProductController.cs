@@ -52,66 +52,45 @@ namespace WebApplication3.Controllers
             return Json(new { totalSum = cart.TotalPriceWithVAT }, JsonRequestBehavior.AllowGet);
         }
 
-        private Cart newCart()
-        {
-            if (User.Identity.IsAuthenticated)
-            return new Cart
-            {
-                Id = Guid.NewGuid(),
-                    UserId = User.Identity.GetUserId(),
-                CartProducts = new List<CartProduct>()
-            };
-            else
-                return new Cart
-                {
-                    Id = Guid.NewGuid(),
-                    CartProducts = new List<CartProduct>()
-                };
-        }
-
         private Cart getCartFromCookie()
         {
             Cart cart = null;
-            var cookie = Request.Cookies["cartId"];
-            if (cookie != null || cookie.Value != null)
+            string cookieKey = "cartId";
+            if (User.Identity.IsAuthenticated)
+                cookieKey = String.Format("cartId-{0}", User.Identity.Name);
+
+            var cookie = Request.Cookies[cookieKey];
+            if (cookie != null && cookie.Value != null)
             {
                 Guid cartId = Guid.Parse(cookie.Value);
                 cart = Context.Carts.Find(cartId);
             }
+            
+            return cart;
+        }
+
+        private Cart CreateNewCartCookie()
+        {
+            string cookieKey = "cartId";
+
+            var cart = new Cart
+            {
+                Id = Guid.NewGuid(),
+                CartProducts = new List<CartProduct>()
+            };
+
+            Context.Carts.Add(cart);
+            var cookie = new HttpCookie(cookieKey, cart.Id.ToString());
+            cookie.Expires = DateTime.Now.AddDays(1);
+            Response.SetCookie(cookie);
+            Context.SaveChanges();
             return cart;
         }
 
         private Cart getUserShoppingCart() {
-            Cart cart = null;
-
-            if (User.Identity.IsAuthenticated)
-            {
-                cart = getCartFromCookie();
-                if (cart == null)
-                {
-                    var userId = User.Identity.GetUserId();
-                    var user = Context.AspNetUsers.Find(userId);
-                    cart = Context.Carts.SingleOrDefault(x => x.UserId == userId);
-                    if (cart == null)
-                    {
-                        cart = newCart();
-                        Context.Carts.Add(cart);
-                    }
-                }
-            }
-            else
-            {
-                cart = getCartFromCookie();
-                if (cart == null)
-            {
-                cart = newCart();
-                Context.Carts.Add(cart);
-                Context.SaveChanges();
-                    var cookie = new HttpCookie("cartId", cart.Id.ToString());
-                cookie.Expires = DateTime.Now.AddDays(1);
-                Response.SetCookie(cookie);
-            }
-            }
+            Cart cart = getCartFromCookie();
+            if (cart == null)
+                cart = CreateNewCartCookie();
 
             return cart;
         }
@@ -139,7 +118,7 @@ namespace WebApplication3.Controllers
                     });
                 }
 
-                Context.SaveChangesAsync();
+                Context.SaveChanges();
 
                 return Json(new {success = true});
             }
@@ -158,7 +137,7 @@ namespace WebApplication3.Controllers
                 var removedProduct = cart.CartProducts.SingleOrDefault(x => x.ProductId == id);
                 if (removedProduct != null)
                     cart.CartProducts.Remove(removedProduct);
-                Context.SaveChangesAsync();
+                Context.SaveChanges();
                 return Json(new { success = true });
             }
             catch (Exception e)

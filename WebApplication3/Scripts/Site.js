@@ -152,23 +152,6 @@ $("body").on("click", ".remove-from-cart", function (e) {
     $(this).closest("tr").hide(300, function () {
         removeProductFromCart(removeUrl);
     });
-    //BootstrapDialog.show({
-    //    title: 'Hoiatus',
-    //    message: 'Kas olete kindel, et tahate toote ostukorvist eemaldada?',
-    //    buttons: [{
-    //        label: 'Jah',
-    //        action: function (dialog) {
-    //            //dialog.setTitle('Title 1');
-    //            dialog.close();
-    //        }
-    //    }, {
-    //        label: 'Ei',
-    //        action: function (dialog) {
-    //            //dialog.setTitle('Title 2');
-    //            dialog.close();
-    //        }
-    //    }]
-    //});
 })
 
 $("body").on("click", ".change-product-amount", function (e) {
