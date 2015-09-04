@@ -11,7 +11,7 @@ namespace DataLayer
     [MetadataType(typeof(OrderMetaData))]
     public partial class Order
     {
-        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithoutVAT
         {
             get
@@ -25,7 +25,7 @@ namespace DataLayer
             }
         }
 
-        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]        
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithVAT
         {
             get
@@ -34,7 +34,7 @@ namespace DataLayer
             }
         }
 
-        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal VATOfTotalPrice
         {
             get
@@ -46,5 +46,7 @@ namespace DataLayer
 
     public partial class OrderMetaData
     {
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy hh:mm}")]
+        public System.DateTime DateOfOrder { get; set; }
     }
 }

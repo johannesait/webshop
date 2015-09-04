@@ -10,12 +10,13 @@ namespace DataLayer
     [MetadataType(typeof(CartProductMetaData))]
     public partial class CartProduct
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
-        public decimal TotalPriceWithoutVAT {
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal TotalPriceWithoutVAT
+        {
             get { return Product != null ? Product.PriceWithoutTax * Amount : 0; }
         }
 
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithVAT
         {
             get { return Product != null ? Product.PriceWithVAT * Amount : 0; }
@@ -24,7 +25,7 @@ namespace DataLayer
 
     public partial class CartProductMetaData
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Amount { get; set; }
     }
 }

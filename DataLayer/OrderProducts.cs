@@ -12,21 +12,21 @@ namespace DataLayer
     public partial class OrderProduct
     {
 
-        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal PriceWithVAT
         {
             get { return PriceWithoutTax + (PriceWithoutTax * Constants.VAT); }
         }
 
 
-        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithVAT
         {
             get { return PriceWithVAT * Amount; }
         }
 
 
-        [RegularExpression(@"^(0|-?\d{0,16}(\.\d{0,2})?)$")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithoutVAT
         {
             get { return PriceWithoutTax * Amount; }
@@ -35,7 +35,9 @@ namespace DataLayer
 
     public partial class OrderProductMetaData
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:F3}")]
         public decimal Amount { get; set; }
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal PriceWithoutTax { get; set; }
     }
 }
