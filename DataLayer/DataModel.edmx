@@ -65,12 +65,15 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="CartProducts">
           <Key>
@@ -88,6 +91,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="StatusId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrderNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfOrder" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderProduct">
           <Key>
@@ -199,6 +204,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Cart_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CartProducts_CartProducts">
           <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
           <End Role="CartProducts" Type="Self.CartProducts" Multiplicity="*" />
@@ -269,13 +286,13 @@
         </Association>
         <Association Name="FK_OrderProduct_SubCategory">
           <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="1" />
-          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="0..1" />
+          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubCategory">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="OrderProduct">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="SubCategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -447,6 +464,10 @@
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="SubCategory" EntitySet="SubCategory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Cart_AspNetUsers" Association="Self.FK_Cart_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
           <AssociationSet Name="FK_CartProducts_CartProducts" Association="Self.FK_CartProducts_CartProducts">
             <End Role="Cart" EntitySet="Cart" />
             <End Role="CartProducts" EntitySet="CartProducts" />
@@ -550,6 +571,10 @@
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="MonesJaTuurPoodModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_AspNetUsers" Association="MonesJaTuurPoodModel.FK_Cart_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Cart" EntitySet="Carts" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductCategoryDiscount_AspNetUsers" Association="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -671,8 +696,11 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="MonesJaTuurPoodModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="MonesJaTuurPoodModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="Carts" Relationship="MonesJaTuurPoodModel.FK_Cart_AspNetUsers" FromRole="AspNetUser" ToRole="Cart" />
           <NavigationProperty Name="ProductCategoryDiscounts" Relationship="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_AspNetUsers" FromRole="AspNetUser" ToRole="ProductCategoryDiscount" />
           <NavigationProperty Name="ProductDiscounts" Relationship="MonesJaTuurPoodModel.FK_ProductDiscount_AspNetUsers" FromRole="AspNetUser" ToRole="ProductDiscount" />
           <NavigationProperty Name="Orders" Relationship="MonesJaTuurPoodModel.FK_Tellimus_Kasutaja" FromRole="AspNetUser" ToRole="Order" />
@@ -684,6 +712,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="MonesJaTuurPoodModel.FK_Cart_AspNetUsers" FromRole="Cart" ToRole="AspNetUser" />
           <NavigationProperty Name="CartProducts" Relationship="MonesJaTuurPoodModel.FK_CartProducts_CartProducts" FromRole="Cart" ToRole="CartProduct" />
         </EntityType>
         <EntityType Name="CartProduct">
@@ -704,6 +734,8 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="StatusId" Type="Guid" Nullable="false" />
+          <Property Name="OrderNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfOrder" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="MonesJaTuurPoodModel.FK_Tellimus_Kasutaja" FromRole="Order" ToRole="AspNetUser" />
           <NavigationProperty Name="OrderStatu" Relationship="MonesJaTuurPoodModel.FK_Tellimus_TellimuseStaatus" FromRole="Order" ToRole="OrderStatu" />
           <NavigationProperty Name="OrderProducts" Relationship="MonesJaTuurPoodModel.FK_TellimusToode_Tellimus" FromRole="Order" ToRole="OrderProduct" />
@@ -800,7 +832,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ParentCategoryId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="OrderProduct" Relationship="MonesJaTuurPoodModel.FK_OrderProduct_SubCategory" FromRole="SubCategory" ToRole="OrderProduct" />
+          <NavigationProperty Name="OrderProducts" Relationship="MonesJaTuurPoodModel.FK_OrderProduct_SubCategory" FromRole="SubCategory" ToRole="OrderProduct" />
           <NavigationProperty Name="Products" Relationship="MonesJaTuurPoodModel.FK_Toode_Alamgrupp" FromRole="SubCategory" ToRole="Product" />
           <NavigationProperty Name="ProductCategory" Relationship="MonesJaTuurPoodModel.FK_Alamgrupp_Kaubagrupp" FromRole="SubCategory" ToRole="ProductCategory" />
           <NavigationProperty Name="ProductCategoryDiscounts" Relationship="MonesJaTuurPoodModel.FK_ProductCategoryDiscount_SubCategory" FromRole="SubCategory" ToRole="ProductCategoryDiscount" />
@@ -850,6 +882,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_AspNetUsers">
+          <End Type="MonesJaTuurPoodModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="MonesJaTuurPoodModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -952,13 +996,13 @@
         </Association>
         <Association Name="FK_OrderProduct_SubCategory">
           <End Type="MonesJaTuurPoodModel.SubCategory" Role="SubCategory" Multiplicity="1" />
-          <End Type="MonesJaTuurPoodModel.OrderProduct" Role="OrderProduct" Multiplicity="0..1" />
+          <End Type="MonesJaTuurPoodModel.OrderProduct" Role="OrderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubCategory">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="OrderProduct">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="SubCategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1084,6 +1128,8 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="MonesJaTuurPoodModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
@@ -1102,6 +1148,7 @@
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="MonesJaTuurPoodModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1118,6 +1165,8 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="MonesJaTuurPoodModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="DateOfOrder" ColumnName="DateOfOrder" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

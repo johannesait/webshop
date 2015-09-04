@@ -15,7 +15,10 @@ namespace WebApplication3.Controllers
         public ActionResult Cart()
         {
             var cart = getUserShoppingCart();
-            return PartialView(cart);
+            if (Request.IsAjaxRequest())
+                return PartialView(cart);
+            else
+                return View(cart);
         }
 
         public JsonResult CartTotalSum()
@@ -27,50 +30,63 @@ namespace WebApplication3.Controllers
 
         private Cart newCart()
         {
-            //if kasutaja on sisse loginud, siis seo kasutajaga
-            return new Cart
+            if (User.Identity.IsAuthenticated)
+                return new Cart
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = User.Identity.GetUserId(),
+                    CartProducts = new List<CartProduct>()
+                };
+            else
+                return new Cart
+                {
+                    Id = Guid.NewGuid(),
+                    CartProducts = new List<CartProduct>()
+                };
+        }
+
+        private Cart getCartFromCookie()
+        {
+            Cart cart = null;
+            var cookie = Request.Cookies["cartId"];
+            if (cookie != null || cookie.Value != null)
             {
-                Id = Guid.NewGuid(),
-                CartProducts = new List<CartProduct>()
-            };
+                Guid cartId = Guid.Parse(cookie.Value);
+                cart = Context.Carts.Find(cartId);
+            }
+            return cart;
         }
 
         private Cart getUserShoppingCart() {
             Cart cart = null;
-            //mis siis kui mitu kasutajat samas arvutis on?
-            //peab ikka siduma kasutajaga, kui on sisse logitud
-            var cookie = Request.Cookies["cartId"];
-            if (cookie == null)
+
+            if (User.Identity.IsAuthenticated)
             {
-                cart = newCart();
-                Context.Carts.Add(cart);
-                Context.SaveChanges();
-                cookie = new HttpCookie("cartId", cart.Id.ToString());
-                cookie.Expires = DateTime.Now.AddDays(1);
-                Response.SetCookie(cookie);
+                cart = getCartFromCookie();
+                if (cart == null)
+                {
+                    var userId = User.Identity.GetUserId();
+                    var user = Context.AspNetUsers.Find(userId);
+                    cart = Context.Carts.SingleOrDefault(x => x.UserId == userId);
+                    if (cart == null)
+                    {
+                        cart = newCart();
+                        Context.Carts.Add(cart);
+                    }
+                }
             }
             else
             {
-                //if cookie is expired create a new cart and cookie
-                //if (cookie.Expires < DateTime.Now)
-                //{
-                //    var oldCart = Context.Carts.Find(Guid.Parse(cookie.Value));
-                //    Context.Carts.Remove(oldCart);
-                //    Context.SaveChanges();
-
-                //    cart = newCart();
-                //    cookie.Value = cart.Id.ToString();
-                //    cookie.Expires = DateTime.Now.AddDays(1);
-                //    Response.SetCookie(cookie);
-                //}
-                //else
-                //{
-                //    Guid cartId = Guid.Parse(cookie.Value);
-                //    cart = Context.Carts.Find(cartId);
-                //}
-                Guid cartId = Guid.Parse(cookie.Value);
-                cart = Context.Carts.Find(cartId);
-                
+                cart = getCartFromCookie();
+                if (cart == null)
+                {
+                    cart = newCart();
+                    Context.Carts.Add(cart);
+                    Context.SaveChanges();
+                    var cookie = new HttpCookie("cartId", cart.Id.ToString());
+                    cookie.Expires = DateTime.Now.AddDays(1);
+                    Response.SetCookie(cookie);
+                }
             }
 
             return cart;

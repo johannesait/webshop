@@ -41,7 +41,7 @@ else
                     {
                         foreach (var item in Model.CartProducts)
                         {
-                            <tr>
+                            <tr data-product-id="@item.ProductId">
                                 <td>@Html.DisplayFor(model => item.Product.ProductCode)</td>
                                 <td>@Html.DisplayFor(model => item.Product.Title)</td>
                                 <td>@Html.DisplayFor(model => item.Product.AdditionalTitle)</td>

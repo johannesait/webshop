@@ -172,6 +172,11 @@ $("body").on("click", ".remove-from-cart", function (e) {
 })
 
 $("body").on("click", ".change-product-amount", function (e) {
+    debugger;
+    var productRow = $(this).closest("tr");
+    var productId = $(productRow).data("product-id")
+    var newAmount = $(productRow).find(".product-amount").val();
+
 
 });
 
