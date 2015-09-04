@@ -163,6 +163,21 @@ $("body").on("click", ".change-product-amount", function (e) {
 
 });
 
+$("body").on("submit", "#cart-update-form", function (e) {
+    e.preventDefault();
+    var form = e.target;
+
+    $.ajax({
+        type: "POST",
+        url: form.action,
+        data: $(form).serialize(),
+        success: function (data) {
+            $("#main-content").html(data);
+            updateCartBadge();
+        }
+    })
+})
+
 $(document).ready(function () {
     updateCartBadge();
     var topMenusAdded = $("#menu-content").hasClass("collapsed-menu");

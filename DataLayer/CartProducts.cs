@@ -12,13 +12,13 @@ namespace DataLayer
     {
         [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
         public decimal TotalPriceWithoutVAT {
-            get { return Product.PriceWithoutTax * Amount; }
+            get { return Product != null ? Product.PriceWithoutTax * Amount : 0; }
         }
 
         [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
         public decimal TotalPriceWithVAT
         {
-            get { return Product.PriceWithVAT * Amount; }
+            get { return Product != null ? Product.PriceWithVAT * Amount : 0; }
         }
     }
 

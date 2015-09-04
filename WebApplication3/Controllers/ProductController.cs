@@ -45,13 +45,26 @@ namespace WebApplication3.Controllers
                 return View(cart);
         }
 
+        public ActionResult UpdateCart([Bind(Include = "ProductId, Amount")] List<CartProduct> cartProducts, Guid cartId)
+        {
+            var cart = Context.Carts.Find(cartId);
+            foreach (var updatedCartProduct in cartProducts)
+            {
+                var oldCartProduct = cart.CartProducts.Single(x => x.ProductId == updatedCartProduct.ProductId);
+                oldCartProduct.Amount = updatedCartProduct.Amount;
+            }
+            Context.SaveChanges();
+
+            return RedirectToAction("Cart");
+        }
+
         public JsonResult CartTotalSum()
         {
             var cart = getUserShoppingCart();
-
             return Json(new { totalSum = cart.TotalPriceWithVAT }, JsonRequestBehavior.AllowGet);
         }
 
+        //gets either the general cart cookie or the cart cookie of a particular user
         private Cart getCartFromCookie()
         {
             Cart cart = null;
@@ -69,6 +82,7 @@ namespace WebApplication3.Controllers
             return cart;
         }
 
+        //Creates a new cart cookie that is not tied to a particular user
         private Cart CreateNewCartCookie()
         {
             string cookieKey = "cartId";
@@ -105,18 +119,14 @@ namespace WebApplication3.Controllers
                 var existingCartProduct = cart.CartProducts.SingleOrDefault(x => x.ProductId == product.ProductId);
 
                 if (existingCartProduct != null)
-                {
                     existingCartProduct.Amount += amount;
-                }
                 else
-                {
                     cart.CartProducts.Add(new CartProduct
                     {
                         Cart = cart,
                         Product = product,
                         Amount = amount
                     });
-                }
 
                 Context.SaveChanges();
 
