@@ -193,7 +193,7 @@ namespace WebApplication3.Controllers
             var userId = User.Identity.GetUserId();
 
             var cart = getUserShoppingCart();
-            var orderNumberDate = DateTime.Now.Date.ToShortDateString().Replace("/", "");
+            var orderNumberDate = DateTime.Now.Date.ToString().Replace("/", "");
             var order = new Order() { 
                 Id = cart.Id,
                 UserId = userId,
