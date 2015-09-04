@@ -93,13 +93,13 @@ namespace WebApplication3.Controllers
                 CartProducts = new List<CartProduct>()
             };
 
-            Context.Carts.Add(cart);
+                Context.Carts.Add(cart);
             var cookie = new HttpCookie(cookieKey, cart.Id.ToString());
-            cookie.Expires = DateTime.Now.AddDays(1);
-            Response.SetCookie(cookie);
+                cookie.Expires = DateTime.Now.AddDays(1);
+                Response.SetCookie(cookie);
             Context.SaveChanges();
             return cart;
-        }
+            }
 
         private Cart getUserShoppingCart() {
             Cart cart = getCartFromCookie();
@@ -182,7 +182,7 @@ namespace WebApplication3.Controllers
             var userId = User.Identity.GetUserId();
 
             var cart = getUserShoppingCart();
-            var orderNumberDate = DateTime.Now.Date.ToString().Replace("/", "");
+            var orderNumberDate = DateTime.Now.Date.ToShortDateString().Replace(".", "");
             var order = new Order() { 
                 Id = cart.Id,
                 UserId = userId,
@@ -212,9 +212,10 @@ namespace WebApplication3.Controllers
             var cookie = Request.Cookies["cartId"];
             if (cookie != null)
             {
-                cookie.Value = null;
+                cookie.Expires = DateTime.Now.AddDays(-1);
                 Response.SetCookie(cookie);
             }
+            var modelstate = new ModelState();
             //Context.AspNetUsers.Add(user);
             Context.Orders.Add(order);
             Context.SaveChanges();

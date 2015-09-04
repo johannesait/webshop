@@ -12,18 +12,23 @@
             <tr>
                 <th>Tellimuse nr</th>
                 <th>Tellitud</th>
-                <th>Staatus</th>
                 <th>Summa</th>
+                <th>Staatus</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.OrderNumber</td>
-                    <td>@item.DateOfOrder</td>
-                    <td>@item.OrderStatu.Status</td>
-                    <td>@Html.DisplayFor(model => item.TotalPriceWithVAT) €</td>
+                    <td>@Html.ActionLink(item.OrderNumber, "Details", "Order", new { id = item.Id }, new { hidefocus = "hidefocus" })</td>
+                    <td>@Html.DisplayFor(model => item.DateOfOrder)</td>
+                    <td>@Html.DisplayFor(model => item.TotalPriceWithVAT) </td>
+                    <td>@item.OrderStatu.Status |
+                    @if (item.OrderStatu.Status == "Maksmata")
+                    {
+                       <a href="/Order" data-push="true">Maksan</a>                    
+                    }
+                    </td>
                 </tr>
             }
         </tbody>

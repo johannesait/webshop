@@ -69,6 +69,7 @@
     <Compile Include="CartProduct.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="OrderProducts.cs" />
     <Compile Include="CartProducts.cs" />
     <Compile Include="Orders.cs" />
     <Compile Include="Carts.cs" />

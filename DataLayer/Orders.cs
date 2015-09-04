@@ -11,7 +11,7 @@ namespace DataLayer
     [MetadataType(typeof(OrderMetaData))]
     public partial class Order
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithoutVAT
         {
             get
@@ -25,16 +25,16 @@ namespace DataLayer
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithVAT
         {
             get
             {
-                return TotalPriceWithoutVAT + (TotalPriceWithoutVAT * Constants.VAT);
+                return Math.Round(TotalPriceWithoutVAT + (TotalPriceWithoutVAT * Constants.VAT), 2, MidpointRounding.AwayFromZero);
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal VATOfTotalPrice
         {
             get
@@ -46,5 +46,7 @@ namespace DataLayer
 
     public partial class OrderMetaData
     {
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy hh:mm}")]
+        public System.DateTime DateOfOrder { get; set; }
     }
 }

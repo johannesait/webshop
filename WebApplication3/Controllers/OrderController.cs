@@ -19,5 +19,11 @@ namespace WebApplication3.Controllers
 
             return View(userOrders);
         }
+
+        public ActionResult Details(Guid id)
+        {
+            var orderDetails = Context.Orders.Find(id);
+            return View(orderDetails);
+        }
     }
 }

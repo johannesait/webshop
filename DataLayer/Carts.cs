@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    [MetadataType(typeof(OrderMetaData))]
+    [MetadataType(typeof(CartMetaData))]
     public partial class Cart
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal TotalPriceWithoutVAT
         {
             get
             {
-                decimal totalPrice = 0;
+                decimal totalPrice = 0.00M;
                 foreach (var item in CartProducts)
                 {
                     totalPrice += item.TotalPriceWithoutVAT;
@@ -24,17 +24,16 @@ namespace DataLayer
                 return totalPrice;
             }
         }
-
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString="{0:c}")]
         public decimal TotalPriceWithVAT
         {
             get
             {
-                return TotalPriceWithoutVAT + (TotalPriceWithoutVAT * Constants.VAT);
+                return Math.Round(TotalPriceWithoutVAT + (TotalPriceWithoutVAT * Constants.VAT), 2, MidpointRounding.AwayFromZero);
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal VATOfTotalPrice
         {
             get
@@ -44,7 +43,7 @@ namespace DataLayer
         }
     }
 
-    public partial class OrderMetaData
+    public partial class CartMetaData
     {
     }
 }
