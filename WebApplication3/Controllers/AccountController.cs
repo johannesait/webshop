@@ -79,6 +79,7 @@ namespace WebApplication3.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    createUserShoppingCartCookie(model.Email);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -91,7 +92,22 @@ namespace WebApplication3.Controllers
             }
         }
 
-        //
+        private void createUserShoppingCartCookie(string userEmail)
+        {
+            var userCartCookieKey = String.Format("cartId-{0}", userEmail);
+            var cartCookie = Request.Cookies[userCartCookieKey];
+            if (cartCookie == null || cartCookie.Value == null)
+            {
+                cartCookie = Request.Cookies["cartId"];
+                cartCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.SetCookie(cartCookie);
+
+                var userCartCookie = new HttpCookie(userCartCookieKey, cartCookie.Value);
+                userCartCookie.Expires = DateTime.Now.AddDays(1);
+                Response.SetCookie(userCartCookie);
+            }
+        }
+
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
