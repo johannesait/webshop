@@ -18,6 +18,7 @@ namespace DataLayer
         {
             this.AspNetUserClaims = new HashSet<AspNetUserClaim>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
+            this.Carts = new HashSet<Cart>();
             this.ProductCategoryDiscounts = new HashSet<ProductCategoryDiscount>();
             this.ProductDiscounts = new HashSet<ProductDiscount>();
             this.Orders = new HashSet<Order>();
@@ -43,6 +44,7 @@ namespace DataLayer
     
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<ProductCategoryDiscount> ProductCategoryDiscounts { get; set; }
         public virtual ICollection<ProductDiscount> ProductDiscounts { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

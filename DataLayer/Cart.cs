@@ -22,6 +22,7 @@ namespace DataLayer
         public System.Guid Id { get; set; }
         public string UserId { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
         public virtual ICollection<CartProduct> CartProducts { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
     }
