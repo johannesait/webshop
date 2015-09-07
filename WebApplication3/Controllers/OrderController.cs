@@ -12,10 +12,15 @@ namespace WebApplication3.Controllers
     {
         private readonly MonesJaTuurPoodEntities Context = new MonesJaTuurPoodEntities();
         // GET: Order
-        public ActionResult Index()
+        public ActionResult Index(bool? wasRedirected)
         {
+            if (wasRedirected == true) {
+                ViewBag.ShowOrderSuccess = true;
+                Response.AppendHeader("X-WiseLinks-Url", Url.Action("Index", "Order"));
+            }
+
             var userId = User.Identity.GetUserId();
-            var userOrders = Context.AspNetUsers.Find(userId).Orders;
+            var userOrders = Context.AspNetUsers.Find(userId).Orders.OrderByDescending(x => x.DateOfOrder);
 
             return View(userOrders);
         }

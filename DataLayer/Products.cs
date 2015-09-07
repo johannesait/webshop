@@ -11,7 +11,7 @@ namespace DataLayer
     [MetadataType(typeof(ProductMetaData))]
     public partial class Product
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal PriceWithVAT
         {
             get
@@ -23,7 +23,7 @@ namespace DataLayer
 
     public partial class ProductMetaData
     {
-        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal PriceWithoutTax { get; set; }
     }
 }

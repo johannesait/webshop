@@ -2,35 +2,64 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Index</h2>
+@if (ViewBag.ShowOrderSuccess == true)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="bs-component">
+                <div class="alert alert-dismissible alert-success">
+                    Teie tellimus on kinnitatud!
+                </div>
+                <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div>
+            </div>
+        </div>
+    </div>
+}
+<h2>Tellimused</h2>
 <hr />
 
-<div class="table-responsive">
-    <table class="table table-condensed table-hover product-list-table">
-        <thead>
-            <tr>
-                <th>Tellimuse nr</th>
-                <th>Tellitud</th>
-                <th>Summa</th>
-                <th>Staatus</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+@if (Model.Count() == 0)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="bs-component">
+                <div class="alert alert-dismissible alert-info">
+                    Ühtegi tellimust pole veel esitatud!
+                </div>
+                <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-condensed table-hover product-list-table">
+            <thead>
                 <tr>
-                    <td>@Html.ActionLink(item.OrderNumber, "Details", "Order", new { id = item.Id }, new { hidefocus = "hidefocus" })</td>
-                    <td>@Html.DisplayFor(model => item.DateOfOrder)</td>
-                    <td>@Html.DisplayFor(model => item.TotalPriceWithVAT) </td>
-                    <td>@item.OrderStatu.Status |
-                    @if (item.OrderStatu.Status == "Maksmata")
-                    {
-                       <a href="/Order" data-push="true">Maksan</a>                    
-                    }
+                    <th>Tellimuse nr</th>
+                    <th>Tellitud</th>
+                    <th>Summa</th>
+                    <th>Staatus</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(item.OrderNumber, "Details", "Order", new { id = item.Id }, new { hidefocus = "hidefocus" })</td>
+                        <td>@Html.DisplayFor(model => item.DateOfOrder)</td>
+                        <td>@Html.DisplayFor(model => item.TotalPriceWithVAT) </td>
+                        <td>
+                            @item.OrderStatu.Status |
+                        @if (item.OrderStatu.Status == "Maksmata")
+                        {
+                            <a href="/Order" data-push="true">Maksan</a>
+                        }
                     </td>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -51,6 +51,10 @@ textarea {
 .navbar-fixed-top>.container>.navbar-header a:hover {
     /*color:black;*/
 }
+
+.navbar-fixed-top>.container {
+    background-color: #43BFC7;
+}
 .navbar-header {
     height:100%;
 }
@@ -151,4 +155,8 @@ textarea {
 }
 .main-content h1 {
     float:left;
+}
+.alert-success {
+    background-color: #4CC552;
+    border-color: #54C571;
 }

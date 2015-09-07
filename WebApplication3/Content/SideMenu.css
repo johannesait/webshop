@@ -56,7 +56,7 @@
   background-color: #fbfbfb;
   border: none;
   line-height: 28px;
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/
   margin-left: 0px;
   display: table;
     width: 100%;
@@ -66,6 +66,7 @@
 .nav-side-menu li .sub-menu li a {
     display:table-cell;
     padding-left: 20px;
+    font-weight: normal;
 }
 .nav-side-menu ul .sub-menu li a i,
 .nav-side-menu li .sub-menu li a i {
@@ -90,14 +91,15 @@
 .nav-side-menu li {
   padding-left: 20px;
   border-left: 3px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/
   color: #333;
 }
 .nav-side-menu ul li:hover {
     color:#008cba!important;
 }
 .nav-side-menu ul li a {
-    color:inherit;
+    color: #6D6968;
+    font-weight: bold;
 }
 .nav-side-menu li a {
   text-decoration: none;

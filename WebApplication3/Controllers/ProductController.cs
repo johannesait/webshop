@@ -172,7 +172,7 @@ namespace WebApplication3.Controllers
 
         public ActionResult CartConfirmation()
         {
-            var orderNumberOfTheDay = Context.Orders.ToList().Where(x => x.OrderNumber.Contains("5070") && x.OrderNumber.Contains(DateTime.Now.Date.ToShortDateString())).Distinct().Count() + 1;
+            var orderNumberOfTheDay = Context.Orders.ToList().Where(x => x.OrderNumber.Contains("5070") && x.OrderNumber.Contains(DateTime.Now.Date.ToShortDateString().Replace(".", ""))).Distinct().Count() + 1;
             //var user = new AspNetUser()
             //{
             //    UserName = "sandra62",
@@ -219,7 +219,7 @@ namespace WebApplication3.Controllers
             //Context.AspNetUsers.Add(user);
             Context.Orders.Add(order);
             Context.SaveChanges();
-            return RedirectToAction("Index", "Order");
+            return RedirectToAction("Index", "Order", new { wasRedirected = true });
         }
 
         public ActionResult CreateUser()
