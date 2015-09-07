@@ -1,0 +1,5 @@
+﻿@model DataLayer.Cart
+
+<a href="@Url.Action("Cart", "Product")" data-push="true">
+    <i class="fa fa-shopping-cart"></i> Ostukorv <span id="cart-sum-badge">@Html.DisplayFor(model => Model.TotalPriceWithVAT)</span>
+</a>

@@ -58,10 +58,10 @@ namespace WebApplication3.Controllers
             return RedirectToAction("Cart");
         }
 
-        public JsonResult CartTotalSum()
+        public ActionResult CartLink()
         {
             var cart = getUserShoppingCart();
-            return Json(new { totalSum = cart.TotalPriceWithVAT }, JsonRequestBehavior.AllowGet);
+            return PartialView("CartLink", cart);
         }
 
         //gets either the general cart cookie or the cart cookie of a particular user
@@ -82,10 +82,11 @@ namespace WebApplication3.Controllers
             return cart;
         }
 
-        //Creates a new cart cookie that is not tied to a particular user
         private Cart CreateNewCartCookie()
         {
             string cookieKey = "cartId";
+            if (User.Identity.IsAuthenticated)
+                cookieKey = String.Format("cartId-{0}", User.Identity.Name);
 
             var cart = new Cart
             {
@@ -93,13 +94,13 @@ namespace WebApplication3.Controllers
                 CartProducts = new List<CartProduct>()
             };
 
-                Context.Carts.Add(cart);
+            Context.Carts.Add(cart);
             var cookie = new HttpCookie(cookieKey, cart.Id.ToString());
-                cookie.Expires = DateTime.Now.AddDays(1);
-                Response.SetCookie(cookie);
+            cookie.Expires = DateTime.Now.AddDays(1);
+            Response.SetCookie(cookie);
             Context.SaveChanges();
             return cart;
-            }
+        }
 
         private Cart getUserShoppingCart() {
             Cart cart = getCartFromCookie();

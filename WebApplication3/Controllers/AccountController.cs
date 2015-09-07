@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication3.Models;
+using DataLayer;
 
 namespace WebApplication3.Controllers
 {
@@ -94,18 +95,36 @@ namespace WebApplication3.Controllers
 
         private void createUserShoppingCartCookie(string userEmail)
         {
-            var userCartCookieKey = String.Format("cartId-{0}", userEmail);
-            var cartCookie = Request.Cookies[userCartCookieKey];
-            if (cartCookie == null || cartCookie.Value == null)
+            using (var Context = new MonesJaTuurPoodEntities())
             {
-                cartCookie = Request.Cookies["cartId"];
-                cartCookie.Expires = DateTime.Now.AddDays(-1);
-                Response.SetCookie(cartCookie);
+                var userCartCookieKey = String.Format("cartId-{0}", userEmail);
+                var cartCookie = Request.Cookies[userCartCookieKey];
+                if (cartCookie == null || cartCookie.Value == null)
+                {
+                    cartCookie = Request.Cookies["cartId"];
+                    cartCookie.Expires = DateTime.Now.AddDays(-1);
+                    Response.SetCookie(cartCookie);
 
-                var userCartCookie = new HttpCookie(userCartCookieKey, cartCookie.Value);
-                userCartCookie.Expires = DateTime.Now.AddDays(1);
-                Response.SetCookie(userCartCookie);
+                    var userCartCookie = new HttpCookie(userCartCookieKey, cartCookie.Value);
+                    userCartCookie.Expires = DateTime.Now.AddDays(1);
+                    Response.SetCookie(userCartCookie);
+                }
+                else if (cartCookie != null && cartCookie.Value != null)
+                {
+                    var userCart = Context.Carts.Find(Guid.Parse(cartCookie.Value));
+                    if (userCart != null && userCart.CartProducts.Count == 0)
+                    {
+                        cartCookie = Request.Cookies["cartId"];
+                        cartCookie.Expires = DateTime.Now.AddDays(-1);
+                        Response.SetCookie(cartCookie);
+
+                        var userCartCookie = new HttpCookie(userCartCookieKey, cartCookie.Value);
+                        userCartCookie.Expires = DateTime.Now.AddDays(1);
+                        Response.SetCookie(userCartCookie);
+                    }
+                }
             }
+            
         }
 
         // GET: /Account/VerifyCode

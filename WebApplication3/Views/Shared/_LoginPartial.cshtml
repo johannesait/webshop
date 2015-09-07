@@ -2,14 +2,16 @@
 @using WebApplication3.Helpers
 
 <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Ajax.RawActionLink("<i class='fa fa-shopping-cart'></i> Ostukorv <span id='cart-sum-badge'></span>", "Cart", "Product", null, new AjaxOptions
-                                    {
-                                        HttpMethod = "GET",
-                                        InsertionMode = InsertionMode.Replace,
-                                        UpdateTargetId = "main-content"
-                                    }, null)
-        </li>
+    <li id="cartLink">
+        @Html.Action("CartLink", "Product")
+
+        @*@Ajax.RawActionLink("<i class='fa fa-shopping-cart'></i> Ostukorv <span id='cart-sum-badge'></span>", "Cart", "Product", null, new AjaxOptions
+            {
+                HttpMethod = "GET",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "main-content"
+            }, null)*@
+    </li>
         @if (Request.IsAuthenticated)
         {
             <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class='fa fa-sign-out'></i> Logi välja</a></li>
