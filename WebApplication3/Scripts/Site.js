@@ -1,13 +1,16 @@
 ﻿var showSuccess = function (title, message) {
-    new PNotify({
-        title: title,
-        text: false,
-        type: 'success',
-        icon: false,
-        animate_speed: 'normal',
-        delay: 3000,
-        mouse_reset: false
-    });
+    //new PNotify({
+    //    title: title,
+    //    text: false,
+    //    type: 'success',
+    //    icon: false,
+    //    animate_speed: 'normal',
+    //    delay: 3000,
+    //    mouse_reset: false
+    //});
+    debugger;
+    $.notify(message,
+        { globalPosition: "top center", className: "success"});
 }
 
 var addTopMenusToSideMenu = function () {
@@ -60,32 +63,16 @@ $(window).resize(function () {
 //    alert("Ajax stopped");
 //});
 
-var getCartSum = function () {
+var updateCartBadge = function (sum) {
     $.ajax({
         type: "GET",
-        url: url,
-        data: { amount: amount },
+        url: '/Product/CartLink',
         global: false,
         success: function (data) {
-            showSuccess("Lisatud ostukorvi!", "")
+            $("#cartLink").html(data);
+            //$("#cart-sum-badge").text("(" + data.totalSum + " €)");
         }
     })
-}
-
-var updateCartBadge = function (sum) {
-    if (sum != null) {
-        $("#cart-sum-badge").text("(" + sum + " €)");
-    }
-    else {
-        $.ajax({
-            type: "GET",
-            url: '/Product/CartTotalSum',
-            global: false,
-            success: function (data) {
-                $("#cart-sum-badge").text("(" + data.totalSum + " €)");
-            }
-        })
-    }
 }
 
 var formatDecimalNumber = function (number) {
@@ -99,7 +86,7 @@ var addProductToCart = function (url, amount) {
         data: { amount: amount },
         global: false,
         success: function (data) {
-            showSuccess("Lisatud ostukorvi!", "");
+            showSuccess("", "Lisatud ostukorvi!");
             updateCartBadge();
         }
     })
@@ -154,18 +141,22 @@ $("body").on("click", ".remove-from-cart", function (e) {
     });
 })
 
-//$("body").on("click", ".change-product-amount", function (e) {
-//    var targetInput = $($(this).data("target"));
-//    var operation = $(this).data("value");
+$("body").on("click", ".change-product-amount", function (e) {
+    var targetInput = $($(this).data("target"));
+    var operation = $(this).data("value");
 
-//    var value = parseFloat($(targetInput).val());
-//    if (operation == "increase")
-//        value += 1;
-//    else
-//        value -= 1;
+    //replace all commas in the value with dots
+    debugger;
+    var value = parseFloat($(targetInput).val().replace(/\./g, '').replace(',', '.'));
+    if (operation == "increase")
+        value += 1;
+    else
+        value -= 1;
 
-//    $(targetInput).val(value);
-//});
+    value = (Math.round(value * 1000) / 1000).toString().replace('.', ',');
+
+    $(targetInput).val(value);
+});
 
 $("body").on("submit", "#cart-update-form", function (e) {
     e.preventDefault();
@@ -183,7 +174,6 @@ $("body").on("submit", "#cart-update-form", function (e) {
 })
 
 $(document).ready(function () {
-    updateCartBadge();
     var topMenusAdded = $("#menu-content").hasClass("collapsed-menu");
     if (getWindowWidth() < 767) {
         if (!topMenusAdded) {

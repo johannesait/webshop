@@ -4,6 +4,7 @@
     });
     $(document).off('page:done').on('page:done', function () {
         $("a").attr("data-push", true);
+        updateCartBadge();
     });
     $(document).off('page:success').on('page:success', function (event, $target, status) {
         return console.log("Wiselinks status: '" + status + "'");

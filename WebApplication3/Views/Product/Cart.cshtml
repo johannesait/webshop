@@ -21,7 +21,7 @@ else
     <div class="row">
         <div class="table-responsive col-xs-12">
             <form action="@Url.Action("UpdateCart", "Product")" method="post" id="cart-update-form">
-                <input type="hidden" name="cartId" value="@Model.Id"/>
+                <input type="hidden" name="cartId" value="@Model.Id" />
                 <table class="table table-condensed table-hover cart-table">
                     <thead>
                         <tr>
@@ -53,15 +53,15 @@ else
                                     <td>@Html.DisplayFor(model => item.Product.PriceWithVAT)</td>
                                     <td>
                                         <input type="hidden" name="cartProducts[@c].ProductId" value="@item.ProductId">
-                                        <div class="input-group" style="width: 90px;">
+                                        <div class="input-group" style="width: 100px;">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="-0.5" data-target="#spinner" data-toggle="spinner">
+                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="decrease" data-target="#spinner-@c" data-toggle="spinner">
                                                     <span class="glyphicon glyphicon-minus"></span>
                                                 </button>
                                             </span>
-                                            <input type="text" name="cartProducts[@c].Amount" data-ride="spinner" id="spinner" data-precision="2" class="form-control input-number input-sm product-amount" value="@Html.DisplayFor(model => item.Amount)">
+                                            <input type="text" name="cartProducts[@c].Amount" data-ride="spinner" id="spinner-@c" data-precision="2" class="form-control input-number input-sm product-amount" value="@Html.DisplayFor(model => item.Amount)">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="0.5" data-target="#spinner" data-toggle="spinner">
+                                                <button type="button" class="btn btn-default btn-sm change-product-amount" data-value="increase" data-target="#spinner-@c" data-toggle="spinner">
                                                     <span class="glyphicon glyphicon-plus"></span>
                                                 </button>
                                             </span>
@@ -104,7 +104,11 @@ else
         <div class="cart-buttons col-xs-12">
             <div class="pull-right">
                 <button class="update-cart-button btn btn-default" type="submit" form="cart-update-form">Uuenda ostukorvi</button>
-                <a href="@Url.Action("CartConfirmation", "Product")" class="submit-order-button btn btn-danger">Vormista tellimus</a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="@Url.Action("CartConfirmation", "Product")" class="submit-order-button btn btn-danger">Vormista tellimus</a>
+                }
             </div>
         </div>
     </div>

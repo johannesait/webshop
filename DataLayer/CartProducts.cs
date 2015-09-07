@@ -25,7 +25,7 @@ namespace DataLayer
 
     public partial class CartProductMetaData
     {
-        [DisplayFormat(DataFormatString = "{0:c}")]
+        [DisplayFormat(DataFormatString = "{0:F3}")]
         public decimal Amount { get; set; }
     }
 }

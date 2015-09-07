@@ -29,7 +29,12 @@ namespace DataLayer
         {
             get
             {
-                return Math.Round(TotalPriceWithoutVAT + (TotalPriceWithoutVAT * Constants.VAT), 2, MidpointRounding.AwayFromZero);
+                decimal totalPrice = 0.00M;
+                foreach (var item in CartProducts)
+                {
+                    totalPrice += item.TotalPriceWithVAT;
+                }
+                return totalPrice;
             }
         }
 
