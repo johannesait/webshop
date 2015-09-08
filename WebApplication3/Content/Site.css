@@ -160,3 +160,12 @@ textarea {
     background-color: #4CC552;
     border-color: #54C571;
 }
+.with-filter {
+    overflow-x: hidden;
+    min-height:300px;
+}
+.dateFilter input {
+    margin-left: 0.5em;
+    display: inline-block;
+    width: auto;
+}

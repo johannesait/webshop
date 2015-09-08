@@ -4,7 +4,7 @@
 <hr />
 
 <div class="table-responsive">
-    <table class="table table-condensed table-hover product-list-table">
+    <table id="products" class="table table-condensed table-hover product-list-table">
         <thead>
             <tr>
                 <th>Tootekood</th>
@@ -45,3 +45,11 @@
     </table>
 </div>
 <img id="preview" width="200" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $("#products").DataTable({
+            "scrollX": false
+        });
+    });
+</script>

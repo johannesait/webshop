@@ -1,30 +1,15 @@
-﻿@model IEnumerable<DataLayer.Order>
-@{
-    ViewBag.Title = "Index";
-}
-@if (ViewBag.ShowOrderSuccess == true)
-{
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="bs-component">
-                <div class="alert alert-dismissible alert-success">
-                    Teie tellimus on kinnitatud!
-                </div>
-                <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div>
-            </div>
-        </div>
-    </div>
-}
-<h2>Tellimused</h2>
+﻿@model IEnumerable<WebApplication3.Models.OrderedProductListModel>
+
+<h2>Tellitud tooted</h2>
 <hr />
 
-@if (Model.Count() == 0)
+@if (Model == null || Model.Count() == 0)
 {
     <div class="row">
         <div class="col-lg-12">
             <div class="bs-component">
                 <div class="alert alert-dismissible alert-info">
-                    Ühtegi tellimust pole veel esitatud!
+                    Ühtegi toodet pole veel tellitud!
                 </div>
                 <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div>
             </div>
@@ -35,28 +20,37 @@ else
 {
     <div style="position:relative;">
         <div class="with-filter table-responsive col-md-12">
-            <table id="orders" class="table table-condensed table-hover product-list-table">
+            <table id="ordered" class="table table-condensed table-hover product-list-table display">
                 <thead>
                     <tr>
-                        <th>Tellimuse nr</th>
-                        <th>Tellitud</th>
-                        <th>Summa</th>
-                        <th>Staatus</th>
+                        <th>Tootekood</th>
+                        <th>Nimetus</th>
+                        <th>Nimelisa</th>
+                        <th>Ühik</th>
+                        <th>Viimati tellitud</th>
+                        <th>Kordi tellitud</th>
+                        <th>Viimase tellimuse number</th>
+                        <th>Lisa korvi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@Html.ActionLink(item.OrderNumber, "Details", "Order", new { id = item.Id }, new { hidefocus = "hidefocus" })</td>
-                            <td>@Html.DisplayFor(model => item.DateOfOrder)</td>
-                            <td>@Html.DisplayFor(model => item.TotalPriceWithVAT) </td>
+                            <td>@Html.ActionLink(item.ProductCode, "Details", "Product", new { id = item.ProductId }, new { hidefocus = "hidefocus" }) </td>
+                            <td>@item.Title</td>
+                            <td>@item.AdditionalTitle</td>
+                            <td>@Html.DisplayFor(model => item.Unit)</td>
+                            <td>@Html.DisplayFor(model => item.DateLastOrdered) </td>
+                            <td>@Html.DisplayFor(model => item.TimesOrdered) </td>
+                            <td>@Html.ActionLink(item.LastOrderNumber, "Details", "Order", new { id = item.OrderId }, new { hidefocus = "hidefocus" }) </td>
                             <td>
-                                @item.OrderStatu.Status |
-                                @if (item.OrderStatu.Status == "Maksmata")
-                                {
-                                    <a href="/Order" data-push="true">Maksan</a>
-                                }
+                                <div class="input-group" style="width: 100px;">
+                                    <input type="text" class="form-control input-sm product-amount" placeholder="0">
+                                    <span class="input-group-btn">
+                                        <button data-url="@Url.Action("AddProductToCart", "Product", new { id = item.ProductId} )" type="button" class="btn btn-default btn-sm add-to-cart">Lisa</button>
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -86,11 +80,11 @@ else
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var table = $('#orders').DataTable({
+        var table = $('#ordered').DataTable({
             "scrollX": false
         });
-        var tableHeader = $("#orders_wrapper>.row>.col-sm-6");
-        var tableSearch = $("#orders_filter").parent();
+        var tableHeader = $("#ordered_wrapper>.row>.col-sm-6");
+        var tableSearch = $("#ordered_filter").parent();
         $(tableSearch).removeClass("col-sm-6").addClass("col-md-3");
         $(tableHeader).removeClass("col-sm-6").addClass("col-md-9 form-horizontal");
         $(".dataTables_length").addClass("col-md-3");
@@ -118,7 +112,7 @@ else
                     var splitMax = max.split(".");
                     var compareDateMax = new Date(splitMax[2], splitMax[1] - 1, splitMax[0]);
                 }
-                var date = data[1] || 0; // use data for the age column
+                var date = data[4] || 0; // use data for the age column
                 var onlyDate = date.split(" ")[0].split(".");
                 var compareDate = new Date(onlyDate[2], onlyDate[1] - 1, onlyDate[0]);
                 debugger;

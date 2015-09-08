@@ -6,14 +6,24 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/moment-with-locales.js"></script>
+    <script src="~/Scripts/transition.js"></script>
+    <script src="~/Scripts/collapse.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/datatables.min.js"></script>
+
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:700italic' rel='stylesheet' type='text/css'>
     <link href="~/Content/SideMenu.css" rel="stylesheet" />
-    <link href="~/Content/pnotify.custom.min.css" rel="stylesheet" />
+    <link href="~/Content/pnotify.custom.min.css" rel="stylesheet" />s
     <link href="~/Content/bootstrap-dialog.min.css" rel="stylesheet" />
+    <link href="~/Content/datatables.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -30,7 +40,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Tellitud tooted", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Tellitud tooted", "OrderedProducts", "Order")</li>
                     <li>@Html.ActionLink("Tellimused", "Index", "Order")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -42,12 +52,9 @@
         <div class="main-content" id="main-content">
             @RenderBody()
         </div>
-        <footer>
-        </footer>
+        <footer></footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/Site.js"></script>
     <script src="~/Scripts/pnotify.custom.min.js"></script>
@@ -56,5 +63,7 @@
     <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/wiselinks/coffeeScripts/coffee")"></script>
     @*<script src="~/Scripts/bootstrap-spinner.min.js"></script>*@
     <script src="~/Scripts/notify.min.js"></script>
+
+
 </body>
 </html>
