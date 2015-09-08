@@ -168,18 +168,25 @@ namespace WebApplication3.Controllers
             ViewBag.Title = categoryName;
             var productCategory = Context.SubCategories.SingleOrDefault(x => x.Name == categoryName);
             var products = productCategory.Products;
-            return PartialView(products);
+            if (Request.IsAjaxRequest())
+                return PartialView(products);
+            else
+                return View(products);
+        }
+
+        public ActionResult Details(Guid id)
+        {
+            var product = Context.Products.Find(id);
+
+            if (Request.IsAjaxRequest())
+                return PartialView(product);
+            else
+                return View(product);
         }
 
         public ActionResult CartConfirmation()
         {
             var orderNumberOfTheDay = Context.Orders.ToList().Where(x => x.OrderNumber.Contains("5070") && x.OrderNumber.Contains(DateTime.Now.Date.ToShortDateString().Replace(".", ""))).Distinct().Count() + 1;
-            //var user = new AspNetUser()
-            //{
-            //    UserName = "sandra62",
-            //    Email = "sandra.demitseva@gmail.com",
-            //    Id = Guid.NewGuid().ToString()
-            //};
             var userId = User.Identity.GetUserId();
 
             var cart = getUserShoppingCart();

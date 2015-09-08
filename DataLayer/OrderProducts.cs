@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAnnotationsExtensions;
 
 namespace DataLayer
 {
@@ -36,6 +37,7 @@ namespace DataLayer
     public partial class OrderProductMetaData
     {
         [DisplayFormat(DataFormatString = "{0:F3}")]
+        [Min(0.001)]
         public decimal Amount { get; set; }
         [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal PriceWithoutTax { get; set; }

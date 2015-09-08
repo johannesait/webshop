@@ -68,6 +68,13 @@
           <Property Name="FirstName" Type="nvarchar(max)" />
           <Property Name="LastName" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="BusinessFunction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
@@ -83,6 +90,33 @@
           <Property Name="CartId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ProductId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="9" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="1024" />
+          <Property Name="CompanyAddress" Type="nvarchar(max)" />
+          <Property Name="PhoneNr" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="BusinessRegisterNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="VATPayerNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="BusinessFunctionId" Type="uniqueidentifier" />
+          <Property Name="ProductCategories" Type="nvarchar(max)" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CustomerJobTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="CustomerPhoneNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerEmail" Type="nvarchar" MaxLength="255" />
+          <Property Name="DeliveryAddress" Type="nvarchar(max)" />
+          <Property Name="DeliveryTimes" Type="nvarchar" MaxLength="255" />
+          <Property Name="DeliveryRecipientNames" Type="nvarchar" MaxLength="255" />
+          <Property Name="DeliveryRecipientJobTitles" Type="nvarchar" MaxLength="255" />
+          <Property Name="DeliveryRecipientPhoneNrs" Type="nvarchar" MaxLength="255" />
+          <Property Name="WantsVisitBySalesperson" Type="bit" Nullable="false" />
+          <Property Name="PurposeOfSalespersonVisit" Type="nvarchar(max)" />
+          <Property Name="WantsOffersToEmail" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -115,6 +149,17 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
+        <EntityType Name="Package">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="PriceWithoutVAT" Type="decimal" Precision="18" Scale="9" />
+          <Property Name="Capacity" Type="decimal" Precision="18" Scale="9" />
+          <Property Name="AmountAvailable" Type="int" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -128,6 +173,12 @@
           <Property Name="DiscountPriceWithoutTax" Type="decimal" Precision="18" Scale="9" />
           <Property Name="SubCategoryId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PhotoId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Package1" Type="decimal" Precision="18" Scale="9" Nullable="false" />
+          <Property Name="Package2" Type="decimal" Precision="18" Scale="9" />
+          <Property Name="AmountAvailable" Type="decimal" Precision="18" Scale="9" Nullable="false" />
+          <Property Name="DaysToOrder" Type="int" />
+          <Property Name="ExpiringDate" Type="date" />
+          <Property Name="PackageId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="ProductCategory">
           <Key>
@@ -228,6 +279,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Contract_BusinessFunction">
+          <End Role="BusinessFunction" Type="Self.BusinessFunction" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessFunction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="BusinessFunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -305,6 +368,18 @@
             </Principal>
             <Dependent Role="CartProducts">
               <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Package">
+          <End Role="Package" Type="Self.Package" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Package">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="PackageId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -447,11 +522,14 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BusinessFunction" EntityType="Self.BusinessFunction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CartProducts" EntityType="Self.CartProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contract" EntityType="Self.Contract" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderProduct" EntityType="Self.OrderProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Package" EntityType="Self.Package" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategoryDiscount" EntityType="Self.ProductCategoryDiscount" Schema="dbo" store:Type="Tables" />
@@ -471,6 +549,10 @@
           <AssociationSet Name="FK_CartProducts_CartProducts" Association="Self.FK_CartProducts_CartProducts">
             <End Role="Cart" EntitySet="Cart" />
             <End Role="CartProducts" EntitySet="CartProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_BusinessFunction" Association="Self.FK_Contract_BusinessFunction">
+            <End Role="BusinessFunction" EntitySet="BusinessFunction" />
+            <End Role="Contract" EntitySet="Contract" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -495,6 +577,10 @@
           <AssociationSet Name="FK_OstukorvTooted_Toode" Association="Self.FK_OstukorvTooted_Toode">
             <End Role="Product" EntitySet="Product" />
             <End Role="CartProducts" EntitySet="CartProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Package" Association="Self.FK_Product_Package">
+            <End Role="Package" EntitySet="Package" />
+            <End Role="Product" EntitySet="Product" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductCategoryDiscount_AspNetUsers" Association="Self.FK_ProductCategoryDiscount_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -551,11 +637,14 @@
           <EntitySet Name="AspNetUserClaims" EntityType="MonesJaTuurPoodModel.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="MonesJaTuurPoodModel.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="MonesJaTuurPoodModel.AspNetUser" />
+          <EntitySet Name="BusinessFunctions" EntityType="MonesJaTuurPoodModel.BusinessFunction" />
           <EntitySet Name="Carts" EntityType="MonesJaTuurPoodModel.Cart" />
           <EntitySet Name="CartProducts" EntityType="MonesJaTuurPoodModel.CartProduct" />
+          <EntitySet Name="Contracts" EntityType="MonesJaTuurPoodModel.Contract" />
           <EntitySet Name="Orders" EntityType="MonesJaTuurPoodModel.Order" />
           <EntitySet Name="OrderProducts" EntityType="MonesJaTuurPoodModel.OrderProduct" />
           <EntitySet Name="OrderStatus" EntityType="MonesJaTuurPoodModel.OrderStatu" />
+          <EntitySet Name="Packages" EntityType="MonesJaTuurPoodModel.Package" />
           <EntitySet Name="Products" EntityType="MonesJaTuurPoodModel.Product" />
           <EntitySet Name="ProductCategories" EntityType="MonesJaTuurPoodModel.ProductCategory" />
           <EntitySet Name="ProductCategoryDiscounts" EntityType="MonesJaTuurPoodModel.ProductCategoryDiscount" />
@@ -592,6 +681,10 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="ViewedProduct" EntitySet="ViewedProducts" />
           </AssociationSet>
+          <AssociationSet Name="FK_Contract_BusinessFunction" Association="MonesJaTuurPoodModel.FK_Contract_BusinessFunction">
+            <End Role="BusinessFunction" EntitySet="BusinessFunctions" />
+            <End Role="Contract" EntitySet="Contracts" />
+          </AssociationSet>
           <AssociationSet Name="FK_CartProducts_CartProducts" Association="MonesJaTuurPoodModel.FK_CartProducts_CartProducts">
             <End Role="Cart" EntitySet="Carts" />
             <End Role="CartProduct" EntitySet="CartProducts" />
@@ -611,6 +704,10 @@
           <AssociationSet Name="FK_OrderProduct_SubCategory" Association="MonesJaTuurPoodModel.FK_OrderProduct_SubCategory">
             <End Role="SubCategory" EntitySet="SubCategories" />
             <End Role="OrderProduct" EntitySet="OrderProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Package" Association="MonesJaTuurPoodModel.FK_Product_Package">
+            <End Role="Package" EntitySet="Packages" />
+            <End Role="Product" EntitySet="Products" />
           </AssociationSet>
           <AssociationSet Name="FK_Toode_Alamgrupp" Association="MonesJaTuurPoodModel.FK_Toode_Alamgrupp">
             <End Role="SubCategory" EntitySet="SubCategories" />
@@ -707,6 +804,14 @@
           <NavigationProperty Name="ViewedProducts" Relationship="MonesJaTuurPoodModel.FK_ViewedProduct_AspNetUsers" FromRole="AspNetUser" ToRole="ViewedProduct" />
           <NavigationProperty Name="AspNetRoles" Relationship="MonesJaTuurPoodModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
         </EntityType>
+        <EntityType Name="BusinessFunction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contracts" Relationship="MonesJaTuurPoodModel.FK_Contract_BusinessFunction" FromRole="BusinessFunction" ToRole="Contract" />
+        </EntityType>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
@@ -726,6 +831,34 @@
           <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="9" />
           <NavigationProperty Name="Cart" Relationship="MonesJaTuurPoodModel.FK_CartProducts_CartProducts" FromRole="CartProduct" ToRole="Cart" />
           <NavigationProperty Name="Product" Relationship="MonesJaTuurPoodModel.FK_OstukorvTooted_Toode" FromRole="CartProduct" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessRegisterNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VATPayerNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessFunctionId" Type="Guid" />
+          <Property Name="ProductCategories" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerJobTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerPhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryTimes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryRecipientNames" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryRecipientJobTitles" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryRecipientPhoneNrs" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WantsVisitBySalesperson" Type="Boolean" Nullable="false" />
+          <Property Name="PurposeOfSalespersonVisit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WantsOffersToEmail" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BusinessFunction" Relationship="MonesJaTuurPoodModel.FK_Contract_BusinessFunction" FromRole="Contract" ToRole="BusinessFunction" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -764,6 +897,18 @@
           <Property Name="Status" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Orders" Relationship="MonesJaTuurPoodModel.FK_Tellimus_TellimuseStaatus" FromRole="OrderStatu" ToRole="Order" />
         </EntityType>
+        <EntityType Name="Package">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PriceWithoutVAT" Type="Decimal" Precision="18" Scale="9" />
+          <Property Name="Capacity" Type="Decimal" Precision="18" Scale="9" />
+          <Property Name="AmountAvailable" Type="Int32" />
+          <NavigationProperty Name="Products" Relationship="MonesJaTuurPoodModel.FK_Product_Package" FromRole="Package" ToRole="Product" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -777,7 +922,14 @@
           <Property Name="DiscountPriceWithoutTax" Type="Decimal" Precision="18" Scale="9" />
           <Property Name="SubCategoryId" Type="Guid" Nullable="false" />
           <Property Name="PhotoId" Type="Guid" Nullable="false" />
+          <Property Name="Package1" Type="Decimal" Nullable="false" Precision="18" Scale="9" />
+          <Property Name="Package2" Type="Decimal" Precision="18" Scale="9" />
+          <Property Name="AmountAvailable" Type="Decimal" Nullable="false" Precision="18" Scale="9" />
+          <Property Name="DaysToOrder" Type="Int32" />
+          <Property Name="ExpiringDate" Type="DateTime" Precision="0" />
+          <Property Name="PackageId" Type="Guid" />
           <NavigationProperty Name="CartProducts" Relationship="MonesJaTuurPoodModel.FK_OstukorvTooted_Toode" FromRole="Product" ToRole="CartProduct" />
+          <NavigationProperty Name="Package" Relationship="MonesJaTuurPoodModel.FK_Product_Package" FromRole="Product" ToRole="Package" />
           <NavigationProperty Name="SubCategory" Relationship="MonesJaTuurPoodModel.FK_Toode_Alamgrupp" FromRole="Product" ToRole="SubCategory" />
           <NavigationProperty Name="ProductPhoto" Relationship="MonesJaTuurPoodModel.FK_Toode_TootePilt" FromRole="Product" ToRole="ProductPhoto" />
           <NavigationProperty Name="ProductDiscounts" Relationship="MonesJaTuurPoodModel.FK_TooteSoodustus_Toode" FromRole="Product" ToRole="ProductDiscount" />
@@ -946,6 +1098,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Contract_BusinessFunction">
+          <End Type="MonesJaTuurPoodModel.BusinessFunction" Role="BusinessFunction" Multiplicity="0..1" />
+          <End Type="MonesJaTuurPoodModel.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessFunction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="BusinessFunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CartProducts_CartProducts">
           <End Type="MonesJaTuurPoodModel.Cart" Role="Cart" Multiplicity="1" />
           <End Type="MonesJaTuurPoodModel.CartProduct" Role="CartProduct" Multiplicity="*" />
@@ -1003,6 +1167,18 @@
             </Principal>
             <Dependent Role="OrderProduct">
               <PropertyRef Name="SubCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Package">
+          <End Type="MonesJaTuurPoodModel.Package" Role="Package" Multiplicity="0..1" />
+          <End Type="MonesJaTuurPoodModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Package">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="PackageId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1145,6 +1321,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BusinessFunctions">
+            <EntityTypeMapping TypeName="MonesJaTuurPoodModel.BusinessFunction">
+              <MappingFragment StoreEntitySet="BusinessFunction">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="MonesJaTuurPoodModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
@@ -1159,6 +1343,34 @@
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="CartId" ColumnName="CartId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contracts">
+            <EntityTypeMapping TypeName="MonesJaTuurPoodModel.Contract">
+              <MappingFragment StoreEntitySet="Contract">
+                <ScalarProperty Name="WantsOffersToEmail" ColumnName="WantsOffersToEmail" />
+                <ScalarProperty Name="PurposeOfSalespersonVisit" ColumnName="PurposeOfSalespersonVisit" />
+                <ScalarProperty Name="WantsVisitBySalesperson" ColumnName="WantsVisitBySalesperson" />
+                <ScalarProperty Name="DeliveryRecipientPhoneNrs" ColumnName="DeliveryRecipientPhoneNrs" />
+                <ScalarProperty Name="DeliveryRecipientJobTitles" ColumnName="DeliveryRecipientJobTitles" />
+                <ScalarProperty Name="DeliveryRecipientNames" ColumnName="DeliveryRecipientNames" />
+                <ScalarProperty Name="DeliveryTimes" ColumnName="DeliveryTimes" />
+                <ScalarProperty Name="DeliveryAddress" ColumnName="DeliveryAddress" />
+                <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+                <ScalarProperty Name="CustomerPhoneNumber" ColumnName="CustomerPhoneNumber" />
+                <ScalarProperty Name="CustomerJobTitle" ColumnName="CustomerJobTitle" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="ProductCategories" ColumnName="ProductCategories" />
+                <ScalarProperty Name="BusinessFunctionId" ColumnName="BusinessFunctionId" />
+                <ScalarProperty Name="VATPayerNumber" ColumnName="VATPayerNumber" />
+                <ScalarProperty Name="BusinessRegisterNumber" ColumnName="BusinessRegisterNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="PhoneNr" ColumnName="PhoneNr" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1196,9 +1408,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Packages">
+            <EntityTypeMapping TypeName="MonesJaTuurPoodModel.Package">
+              <MappingFragment StoreEntitySet="Package">
+                <ScalarProperty Name="AmountAvailable" ColumnName="AmountAvailable" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="PriceWithoutVAT" ColumnName="PriceWithoutVAT" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="MonesJaTuurPoodModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+                <ScalarProperty Name="ExpiringDate" ColumnName="ExpiringDate" />
+                <ScalarProperty Name="DaysToOrder" ColumnName="DaysToOrder" />
+                <ScalarProperty Name="AmountAvailable" ColumnName="AmountAvailable" />
+                <ScalarProperty Name="Package2" ColumnName="Package2" />
+                <ScalarProperty Name="Package1" ColumnName="Package1" />
                 <ScalarProperty Name="PhotoId" ColumnName="PhotoId" />
                 <ScalarProperty Name="SubCategoryId" ColumnName="SubCategoryId" />
                 <ScalarProperty Name="DiscountPriceWithoutTax" ColumnName="DiscountPriceWithoutTax" />

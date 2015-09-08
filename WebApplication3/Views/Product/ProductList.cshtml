@@ -22,7 +22,9 @@
             {
                 <tr>
                     <td>@item.ProductCode</td>
-                    <td>@item.Title</td>
+                    <td>
+                        @Html.ActionLink(item.Title, "Details", "Product", new { id = item.ProductId }, null)
+                    </td>
                     <td>@item.AdditionalTitle</td>
                     <td>@item.Unit</td>
                     <td>@Html.DisplayFor(model => item.PriceWithoutTax)</td>
