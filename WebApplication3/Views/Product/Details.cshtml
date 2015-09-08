@@ -1,0 +1,106 @@
+﻿@model DataLayer.Product
+
+<div>
+    <div style="margin-top:21px;">
+        <div class="product-details-image col-md-4 col-md-offset-1">
+            <img src="@Model.ProductPhoto.Aadress" style="max-width:100%;"/>
+        </div>
+        <div class="col-md-6">
+            <h2 style="margin-top:0;">
+                @Html.DisplayFor(model => model.Title)
+            </h2>
+            <dl class="dl-horizontal dl-horizontal-text-left">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ProductCode)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ProductCode)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.AdditionalTitle)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.AdditionalTitle)
+                </dd>
+
+                @if (Model.ExpiringDate.HasValue)
+                {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ExpiringDate)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ExpiringDate)
+                    </dd>
+                }
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Unit)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Unit)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PriceWithoutTax)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PriceWithoutTax)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PriceWithVAT)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PriceWithVAT)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.AmountAvailable)
+                </dt>
+
+                <dd>
+                    @if (Model.AmountAvailable != 0)
+                    {
+                        <span class="stock-amount-green">
+                            @Html.DisplayFor(model => model.AmountAvailable)
+                        </span>
+                    }
+                    else if (Model.DaysToOrder.HasValue)
+                    {
+                        <span class="stock-amount-yellow">
+                            Tellimisel (@Model.DaysToOrder.Value päeva)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="stock-amount-red">
+                            0
+                        </span>
+                    }
+                </dd>
+            </dl>
+
+            <button data-url="@Url.Action("AddProductToCart", "Product", new { id = Model.ProductId} )" style="float:left" class="btn btn-danger add-to-cart-details">Lisa korvi</button>
+            <div class="input-group" style="width: 120px; margin-left:15px; float:left;">
+                <span class="input-group-btn">
+                    <button style="font-size: 10px;height: 39px;padding: 7px;" type="button" class="btn btn-default change-product-amount" data-value="decrease" data-target="#spinner" data-toggle="spinner">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                </span>
+                <input type="text" name="Amount" data-ride="spinner" id="spinner" class="form-control input-number product-amount" value="0">
+                <span class="input-group-btn">
+                    <button style="font-size: 10px;height: 39px;padding: 7px;" type="button" class="btn btn-default change-product-amount" data-value="increase" data-target="#spinner" data-toggle="spinner">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

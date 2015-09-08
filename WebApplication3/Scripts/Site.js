@@ -115,10 +115,24 @@ $("body").on("click", ".add-to-cart", function (e) {
     var button = e.target;
     var amountInput = $(button).parent().prev();
     var url = $(button).data("url");
+    
     var amount = formatDecimalNumber($(amountInput).val());
-    if (amount != 0 && amount != "") {
+    if (amount > 0 && amount != "") {
+        amount = $(amountInput).val().replace(/\./g, ',');
         addProductToCart(url, amount);
         $(amountInput).val("");
+    }
+})
+$("body").on("click", ".add-to-cart-details", function (e) {
+    var button = e.target;
+    var amountInput = $(".product-amount");
+    var url = $(button).data("url");
+    var amount = formatDecimalNumber($(amountInput).val());
+
+    if (amount > 0 && amount != "") {
+        amount = $(amountInput).val().replace(/\./g, ',');
+        addProductToCart(url, amount);
+        $(amountInput).val("0");
     }
 })
 
@@ -145,17 +159,16 @@ $("body").on("click", ".change-product-amount", function (e) {
     var targetInput = $($(this).data("target"));
     var operation = $(this).data("value");
 
-    //replace all commas in the value with dots
-    debugger;
     var value = parseFloat($(targetInput).val().replace(/\./g, '').replace(',', '.'));
     if (operation == "increase")
         value += 1;
     else
         value -= 1;
 
-    value = (Math.round(value * 1000) / 1000).toString().replace('.', ',');
-
-    $(targetInput).val(value);
+    if (value >= 0) {
+        value = (Math.round(value * 1000) / 1000).toString().replace('.', ',');
+        $(targetInput).val(value);
+    }
 });
 
 $("body").on("submit", "#cart-update-form", function (e) {

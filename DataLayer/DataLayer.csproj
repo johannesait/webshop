@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataAnnotationsExtensions">
+      <HintPath>..\packages\DataAnnotationsExtensions.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -63,14 +66,21 @@
     <Compile Include="AspNetUserLogin.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="BusinessFunction.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Cart.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CartProduct.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Contract.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="OrderProducts.cs" />
     <Compile Include="CartProducts.cs" />
+    <Compile Include="Contracts.cs" />
     <Compile Include="Orders.cs" />
     <Compile Include="Carts.cs" />
     <Compile Include="C__MigrationHistory.cs">
@@ -98,6 +108,9 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="OrderStatu.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Package.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Product.cs">

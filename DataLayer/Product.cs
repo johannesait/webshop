@@ -30,8 +30,15 @@ namespace DataLayer
         public Nullable<decimal> DiscountPriceWithoutTax { get; set; }
         public System.Guid SubCategoryId { get; set; }
         public System.Guid PhotoId { get; set; }
+        public decimal Package1 { get; set; }
+        public Nullable<decimal> Package2 { get; set; }
+        public decimal AmountAvailable { get; set; }
+        public Nullable<int> DaysToOrder { get; set; }
+        public Nullable<System.DateTime> ExpiringDate { get; set; }
+        public Nullable<System.Guid> PackageId { get; set; }
     
         public virtual ICollection<CartProduct> CartProducts { get; set; }
+        public virtual Package Package { get; set; }
         public virtual SubCategory SubCategory { get; set; }
         public virtual ProductPhoto ProductPhoto { get; set; }
         public virtual ICollection<ProductDiscount> ProductDiscounts { get; set; }

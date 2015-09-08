@@ -173,6 +173,7 @@
     <Compile Include="Areas\Shop\ShopAreaRegistration.cs" />
     <Compile Include="CoffeeCompiler.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -296,6 +297,8 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
     <Content Include="Views\Product\CartLink.cshtml" />
+    <Content Include="Views\Customer\CreateContract.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
